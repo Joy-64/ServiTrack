@@ -1,0 +1,51 @@
+*{
+     margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+@font-face {
+    font-family:'Sora titulo';
+    src: url(../font/Sora-Bold.ttf);
+}
+
+@font-face {
+    font-family:'Sora subtitulo';
+    src: url(../font/Sora-SemiBold.ttf);
+}
+
+@font-face {
+    font-family:'Inter texto';
+    src: url(../font/Inter_18pt-Regular.ttf);
+}
+
+@font-face {
+    font-family:'Inter botones';
+    src: url(../font/Inter_24pt-SemiBold.ttf);
+}
+
+:root{
+    /*COLORES*/
+    --blanco-suave: #F7F9FC;
+    --negro-suave: #121826;
+    --gris-claro: #D6DCE5;
+    --gris-oscuro: #4B5563;
+    --azul-claro: #8EC5FC;
+    --azul-intermedio: #3B82F6;
+    --azul-oscuro: #1E3A5F;
+    --verde: #34D399;
+    --violeta: #8B5CF6;
+    --celeste: #22D3EE;
+
+    /*TIPOGRAFIAS*/
+    --titulos: 'Sora titulo', sans-serif;
+    --subtitulo: 'Sora subtitulo', sans-serif;
+    --texto: 'Inter texto', sans-serif;
+    --botones: 'Inter botones', sans-serif;
+}
+
+
+body{
+    background-color: var(--gris-claro);
+}
+
