@@ -49,3 +49,6 @@ body{
     background-color: var(--gris-claro);
 }
 
+.nav-links {
+    text-decoration: none;
+}
