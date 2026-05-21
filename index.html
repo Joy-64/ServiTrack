@@ -1,13 +1,55 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ServiTrack</title>
     <link rel="icon" href="./img/logo3.0.jpeg">
     <link rel="stylesheet" href="../ServiTrack/css/style.css">
+    <!--LINKS para que funcioe le mapa-->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+        integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.css" />
+
+
 </head>
+
 <body>
-    
+    <!--ACA esta la cabecera-->
+    <header>
+        <div class="son-grid1">
+            <img src="./img/logo2.0.png" width="200px" height="100px" alt="Logo ServiTrack">
+        </div>
+        <button id="menu-btn"><img src="./img/menu.png" width="20px" height="20px" alt="menu"></button>
+        <nav class="son-grid2" id="menu">
+            <ul>
+                <li><a class="items-menu" href="">¿Quiénes somos?</a></li>
+                <li><a class="items-menu" href="">Nuestro trabajo</a></li>
+                <li><a class="items-menu" href="">Demo</a></li>
+                <li><a class="items-menu" href="">Contacto</a></li>
+            </ul>
+        </nav>
+        <div class="son-grid3"><button class="boton"><a class="login" href="">Acceso</a></button></div>
+    </header>
+    <!--ACA TERMINA-->
+
+    <!--ACA empieza el Demo-->
+
+    <section class="clase-section">
+        <h2></h2>
+        <div id="map"></div>
+    </section>
+
+    <!--ACA esta el link para js, que se conecta con el html: los primeros son para que funcione  el mapa del DEMO-->
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+        integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+    <!-- Plugin geocoder -->
+    <script src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js"></script>
+    <!-- Leaflet base -->
+    <script src="./js/mapa.js"></script>
+    <script src="./js/script.js"></script>
 </body>
+
 </html>
