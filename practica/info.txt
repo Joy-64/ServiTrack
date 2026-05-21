@@ -1,0 +1,33 @@
+
+----------LISTAS------------
+-undrder lis(UL): es una lista donde el orden no interese
+ej: los ingredientes
+
+-order list(OL): importa el orden 
+ej: Pasos para la preparacion
+
+ambas utilizan la etiqueta <li>
+
+-detail list(DL): lista detallada
+dt = titulo
+dd = datos
+
+.....................................................
+
+BUTTON
+-es un boton
+
+flexbox:
+permite manejar items de manera vertical u horizontal 
+itemflexbox: el ancho es el ancho de su contenido
+cuando vos definis un contenedor
+el contenedor flex reacomoda en linea (uno al lado del otro)
+2 valores , todos los items van a estar acomodados al comienzo
+
+
+
+ 
+
+
+
+

@@ -1,0 +1,30 @@
+me voy a dedicar a la carga de datos:
+1- de los datos del tecnico:
+.nombre
+.apellido
+.celular
+.mail
+.cotraseña
+.matricula (si va a vencer)
+.redes (si tiene o no)
+.fecha de nacimiento
+.pais
+.provincia
+.ciudad
+.direccion
+.monotributo?
+
+2- de los cliente que el va a cargar:
+.nombre
+.apellido
+.celular
+.mail
+.pais
+.provincia
+.ciudad
+.direccion -> que aparexca en el mapa de joy
+.trabajos
+.presupuesto
+.carga de imagenes de facturas
+
+
