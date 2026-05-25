@@ -196,3 +196,21 @@ body{
 .nav-links {
     text-decoration: none;
 }
+
+/*ACA empieza el footer*/
+
+footer {
+    position: relative;
+    width: 100%;
+    background-color:var(--azul-oscuro);
+    min-height: 100px;
+    padding: 20px 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    list-style: none;
+    color: white;
+    
+
+}
