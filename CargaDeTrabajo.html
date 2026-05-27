@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Cargar-trabajo</title>
+  </head>
+  <body>
+    <!--Header-->
+
+    <header></header>
+
+    <!--Cuerpo-->
+    <form action="form.php" method="get">
+        <lo>
+            <li> <!--Necesito que o poniendo el id me cargue el cliente o conel cliente me cargue el id-->
+                <label for="IdCliente">ID:</label>
+                <input type="number" name="IdCliente" id="IdCliente">
+            </li>
+            <li>
+                <label for="Cliente">Cliente:</label>
+                <input type="text" name="Cliente" id="Cliente" required />
+            </li>
+            <li>
+                <label for="Ubicacion">Ubicacion:</label>
+                <input type="text" name="Ubicacion" id="Ubicacion" />
+            </li>
+           <!-- <li>-->
+                <label for="TrabajoRealizado">Trabajo realizado:</label>
+                <input type="text" name="TrabajoRealizado" id="TrabajoRealizado" />
+           <!-- </li>-->
+            <!--<li>-->
+                <input type="checkbox" name="TipoDeTrabajo" id="TipoDeTrabajoPlomerias">Plomeria
+                <input type="checkbox" name="TipoDeTrabajo" id="TipoDeTrabajoGas">Gas
+                <input type="checkbox" name="TipoDeTrabajo" id="TipoDeTrabajoElectricidad">Electricidad
+                <input type="checkbox" name="TipoDeTrabajo" id="TipoDeTrabajoAlbañineria">Albañileria
+                <input type="checkbox" name="TipoDeTrabajo" id="TipoDeTrabajoPintureria">Pintureria
+                <input type="checkbox" name="TipoDeTrabajo" id="TipoDeTrabajoCarpinteria">Carpinteria
+            <!--</li>-->
+            <li>
+                <label for="Presupuesto">Presupuesto:</label>
+                <input type="text" name="Presupuesto" id="Presupuesto" />
+            </li>
+            <li>
+                <label for="DiasTrabajados">Dias Trabajados:</label>
+                <div>
+                    Desde:<input type="date" name="Desde" id="Desde">
+                    Hasta:<input type="date" name="Hasta" id="Hasta">
+                </div>
+            </li>
+            <li>
+                <label for="CargaComprobante">Cargar Comprobantes:</label>
+                <p><input type="file" name="Comprobante" id="Comprobante" /></p>
+                <p><input type="file" name="Comprobante" id="Comprobante" /></p>
+                <p><input type="file" name="Comprobante" id="Comprobante" /></p>
+                <p><input type="file" name="Comprobante" id="Comprobante" /></p>
+            </li>
+        </lo>
+    </form>
+
+    <!--footer-->
+    <footer></footer>
+  </body>
+</html>

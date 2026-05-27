@@ -24,7 +24,14 @@ cuando vos definis un contenedor
 el contenedor flex reacomoda en linea (uno al lado del otro)
 2 valores , todos los items van a estar acomodados al comienzo
 
+form:
+sirve para ingresar datos 
+un formulario basicamente 
 
+el GET los datos viajan en la url y se pueden vertical
+el POST no viajan por la url y solo funciona si se lo mandas a un formulario funcional (php, js)
+
+que queres que pase con la clausula "action"
 
  
 
