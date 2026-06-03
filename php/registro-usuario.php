@@ -7,8 +7,8 @@ $contrasena = $_POST['contrasena'];
 $rol = "usuario";
 
 
-$sql = "INSERT INTO usuarios(coreo,contrasena) VALUES('$correo', '$contrasena', 'rol';
+$sql = "INSERT INTO usuarios(correo,contrasena,rol) VALUES('$correo', '$contrasena', '$rol')";
 
 mysqli_query($conexion, $sql);
 
-echo "Usuario registrado";
+echo 'Usuario registrado';
