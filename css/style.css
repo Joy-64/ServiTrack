@@ -103,6 +103,15 @@ header{
     display: none;
 }
 
+.son-grid4{
+    display: flex;
+    justify-content: center;
+}
+
+.son-grid5{
+    display: flex;
+    justify-content: center;
+}
 .boton{
     border-radius: 12px;
     background-color: var(--azul-claro);
@@ -137,7 +146,21 @@ header{
     background-color: #3B82F6;
 }
 
+.footer {
+    height: 20rem;
+    width: 100%;
+    background-color:var(--azul-oscuro);
+    min-height: 100px;
+    padding: 20px 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    list-style: none;
+    color:var(--blanco-suave)
+    
 
+}
 
 /*responsive*/
 @media (max-width: 768px){
@@ -199,18 +222,3 @@ body{
 
 /*ACA empieza el footer*/
 
-footer {
-    position: relative;
-    width: 100%;
-    background-color:var(--azul-oscuro);
-    min-height: 100px;
-    padding: 20px 50px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    list-style: none;
-    color: white;
-    
-
-}
