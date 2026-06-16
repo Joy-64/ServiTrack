@@ -103,7 +103,7 @@ header{
     display: none;
 }
 
-.son-grid5 a{
+.foot-enlace a{
     padding: 0 3rem;
     color: white;
 }
@@ -120,12 +120,31 @@ header{
     padding: 1rem;
     text-align: center;
 }
-.son-grid5{
+/*Modificadores del footer*/
+.foot-enlace{
 
     text-align: center;
     padding: 3rem;
 
 }
+.contacto-div{
+    display: flex;
+    flex-direction: column;
+    padding: 1rem;
+    width: 250px;
+}
+.contacto-msj{
+    width: 200%;
+    height: 150px;
+    resize: none;
+}
+.boton-form{
+    display: flex;
+    flex-direction: column;
+    padding: 1rem;
+    width: 80px;
+}
+
 .boton{
     border-radius: 12px;
     background-color: var(--azul-claro);
@@ -221,6 +240,4 @@ body{
 .nav-links {
     text-decoration: none;
 }
-
-/*ACA empieza el footer*/
 
