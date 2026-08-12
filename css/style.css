@@ -107,7 +107,7 @@ header{
     padding: 0 3rem;
     color: white;
 }
-
+/*RENOMBRAR CLASES PARA QUE SU FUNCION SEA MAS CLARA*/
 .son-grid4 img{
     margin-top: 1.4rem;
     border-radius: 50%;
@@ -191,7 +191,7 @@ header{
         gap: 1rem;
         background-color: var(--negro-suave);
     }
-
+    /*RENOMBRAR TODAS LAS CLASES PARA QUE SU FUNCION SEA MUCHO MAS CLARA*/
     .son-grid1,
     .son-grid2,
     .son-grid3{
