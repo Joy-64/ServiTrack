@@ -50,7 +50,6 @@
 /*ACA esta el header en grid*/
 header{
     display: grid;
-    background-color:var(--azul-oscuro) ;
     grid-template-columns: 1fr 3fr 1fr;
     grid-template-rows: 1fr;
     background-color: var(--azul-oscuro);
@@ -127,10 +126,11 @@ header{
     padding: 3rem;
 
 }
+/*Ajustar padding con valores verticales y horizontales*/
 .contacto-div{
     display: flex;
     flex-direction: column;
-    padding: 1rem;
+    padding: 5px 15px;
     width: 250px;
 }
 .contacto-msj{
@@ -163,7 +163,6 @@ header{
 }
 
 .boton a:hover{
-    font-size: 1rem;
     transition: 900ms;
 }
 /*aca termina el header*/
@@ -237,7 +236,4 @@ body{
     background-color: var(--gris-claro);
 }
 
-.nav-links {
-    text-decoration: none;
-}
 
