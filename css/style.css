@@ -57,18 +57,18 @@ header{
     
 }
 
-.son-grid1{
+.header-logo{
     display: flex;
     justify-content: center;
 }
 
-.son-grid2{
+.header-nav{
     display: flex;
     align-items: center;
     
 }
 
-.son-grid2 ul {
+.header-nav ul {
     display: flex;
     justify-content: space-around;
     align-items: center;
@@ -93,7 +93,7 @@ header{
 }
 
 
-.son-grid3{
+.header-boton{
     display: flex;
     justify-content: center;
     align-items: center;
@@ -107,12 +107,12 @@ header{
     padding: 0 3rem;
     color: white;
 }
-/*RENOMBRAR CLASES PARA QUE SU FUNCION SEA MAS CLARA*/
-.son-grid4 img{
+/*CLASES RENOMBRADAS PARA QUE SU FUNCION SEA MAS CLARA*/
+.footer-logo img{
     margin-top: 1.4rem;
     border-radius: 50%;
 }
-.son-grid4{
+.footer-logo{
     display: flex;
     justify-content: center;
 }
@@ -191,19 +191,19 @@ header{
         gap: 1rem;
         background-color: var(--negro-suave);
     }
-    /*RENOMBRAR TODAS LAS CLASES PARA QUE SU FUNCION SEA MUCHO MAS CLARA*/
-    .son-grid1,
-    .son-grid2,
-    .son-grid3{
+    /*CLASES RENOMBRADAS PARA QUE SU FUNCION SEA MAS CLARA*/
+    .header-logo,
+    .header-nav,
+    .header-boton{
         justify-content: center;
     }
 
-    .son-grid2{
+    .header-nav{
         flex-direction: column;
         gap: 15px;
     }
 
-    .son-grid2 ul {
+    .header-nav ul {
         flex-direction: column;
         gap: .5rem;
         width: 100%;
