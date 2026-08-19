@@ -4,6 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Cargar-trabajo</title>
+    <link rel="stylesheet" href="css/style.css">
   </head>
   <body>
     <!--Header-->
@@ -14,16 +15,16 @@
 
     <!--Cuerpo-->
     <form action="CargaDeTrabajo.php" method="post" enctype="multipart/form-data">
-        <ul>
+        <ul class = "cargatrabajo">
             <li> <!--Necesito que o poniendo el id me cargue el cliente o conel cliente me cargue el id-->
                 <label for="IdCliente">ID:</label>
                 <input type="number" name="IdCliente" id="IdCliente">
             </li>
-            <li>
+            <li class = "cliente">
                 <label for="Cliente">Cliente:</label>
                 <input type="text" name="Cliente" id="Cliente" required />
             </li>
-            <li>
+            <li class= "ubicacion">
                 <label for="Ubicacion">Ubicacion:</label>
                 <input type="text" name="Ubicacion" id="Ubicacion" />
             </li>
@@ -31,7 +32,7 @@
                 <label for="TrabajoRealizado">Trabajo realizado:</label>
                 <input type="text" name="TrabajoRealizado" id="TrabajoRealizado" />
             </li>
-            <li>
+            <li class="tipotrabajo">
                 <label>Tipo de Trabajo</label>
                 <div class="checkbox-group">
                     <input type="checkbox" name="TipoDeTrabajo" id="Plomeria">Plomeria
@@ -42,24 +43,24 @@
                     <input type="checkbox" name="TipoDeTrabajo" id="Carpinteria">Carpinteria
                 </div>
             </li>
-            <li>
+            <li class="presupuesto">
                 <label for="Presupuesto">Presupuesto / Materiales:</label>
                 <textarea name="Presupuesto" id="Presupuesto" placeholder="Escribe aquí los materiales utilizados, precios, etc..."></textarea>
             </li>
-            <li>
+            <li class="diastrabajo">
                 <label for="DiasTrabajados">Dias Trabajados:</label>
                 <div class="fechas">
                     Desde:<input type="date" name="Desde" id="Desde">
                     Hasta:<input type="date" name="Hasta" id="Hasta">
                 </div>
             </li>
-            <li>
+            <li class="horastrabajo">
                 <label for="HorasTrabajadas">Horas Trabajadas</label>
                 <div class="horas">
                     <input type="datetime">
                 </div>
             </li>
-            <li>
+            <li class="CargaComprobante">
                 <label for="CargaComprobante">Cargar Comprobantes:</label>
                 <div class="Comprobante">
                     <input type="file" name="Comprobante" id="Comprobante" /><br>

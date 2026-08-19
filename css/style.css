@@ -45,12 +45,25 @@
 }
 
 
-body{
-    background-color: var(--gris-claro);
-}
+
 
 head{
     background-color: var(--azul-oscuro);
+    
+}
+
+body{
+    background-color: var(--gris-claro);
+}
+form{
+    margin:5rem;
+    height: 10%;
+    padding: 2rem ;
+    border:1rem solid var(--azul-oscuro);
+    font-size: 20px;
+}
+
+.cargatrabajo{ 
     
 }
 
