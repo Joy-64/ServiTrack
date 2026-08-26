@@ -10,7 +10,8 @@
 </head>
 
 <body>
-    <!--ACA esta la cabecera-->
+   
+    <!--ACA esta el form de Contacto-->
     <header>
         <div class="header-logo">
             <img src="./img/logo2.0.png" width="200px" height="100px" alt="Logo ServiTrack">
@@ -30,14 +31,15 @@
 
     <main>
         <h1>Contactanos</h1>
-        <form>
+        <form action="contacto_enviar.php" method="POST">
+            
             <div class="contacto-div">
                 <label for="name">Nombre:</label>
-                <input type="text" id="name" name="name" required>
+                <input type="text" id="name" name="name" maxlength="150" required>
             </div>
             <div class="contacto-div">
                 <label for="email">Correo electrónico:</label>
-                <input type="email" id="email" name="email" required>
+                <input type="email" id="email" name="email" maxlength="300" required>
             </div>
             <div class="contacto-div">
                 <label for="tel">Teléfono (opcional):</label>
@@ -45,7 +47,7 @@
             </div>
             <div class="contacto-div">
                 <label for="message">Mensaje:</label>
-                <textarea id="message" name="message" class="contacto-msj" required></textarea>
+                <textarea id="message" name="message" class="contacto-msj" maxlength="500" required></textarea>
             </div>
             <div class="boton-form">
                 <button type="submit">Enviar</button>
