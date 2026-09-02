@@ -2,6 +2,8 @@
      margin: 0;
     padding: 0;
     box-sizing: border-box;
+    text-decoration: none;
+    list-style: none;
 }
 
 @font-face {
@@ -34,6 +36,7 @@
     --azul-intermedio: #3B82F6;
     --azul-oscuro: #1E3A5F;
     --verde: #34D399;
+    --verde-transparente: #34D39980;
     --violeta: #8B5CF6;
     --celeste: #22D3EE;
 
@@ -44,33 +47,144 @@
     --botones: 'Inter botones', sans-serif;
 }
 
-
-
-
-head{
+/*ACA esta el header en grid*/
+header{
+    display: grid;
+    background-color:var(--azul-oscuro) ;
+    grid-template-columns: 1fr 3fr 1fr;
+    grid-template-rows: 1fr;
     background-color: var(--azul-oscuro);
     
 }
 
-body{
-    background-color: var(--gris-claro);
-}
-form{
-    margin:5rem;
-    height: 10%;
-    padding: 2rem ;
-    border:1rem solid var(--azul-oscuro);
-    font-size: 20px;
+.son-grid1{
+    display: flex;
+    justify-content: center;
 }
 
-.cargatrabajo{ 
+.son-grid2{
+    display: flex;
+    align-items: center;
     
 }
 
-footer{
-
+.son-grid2 ul {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    width: 100%;
 }
 
-.nav-links {
-    text-decoration: none;
+.items-menu {
+    font-family: var(--titulos);
+    color: var(--azul-claro);
+    padding: 25px 35px;
+    text-align: center;
+    min-width: 120px;
+    white-space: nowrap;
+}
+
+.items-menu:hover{
+    font-size: 1.10rem;
+    color: var(--negro-suave);
+    transition: 900ms;
+    background-color: var(--verde-transparente);
+    
+}
+
+
+.son-grid3{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#menu-btn{
+    display: none;
+}
+
+.boton{
+    border-radius: 12px;
+    background-color: var(--azul-claro);
+    padding: 10px;
+    font-family: var(--botones);
+    font-weight: 650;
+}
+.boton a{
+    color: var(--negro-suave);
+}
+
+.boton:hover{
+    padding: 12px;
+    transition: 900ms;
+    background-color: var(--verde);
+}
+
+.boton a:hover{
+    font-size: 1rem;
+    transition: 900ms;
+}
+/*aca termina el header*/
+/*ACA empieza el sector Demo*/
+
+.clase-section{
+    padding: 1rem ;
+}
+
+#map{
+    width: 100%;
+    height: 50rem;
+    background-color: #3B82F6;
+}
+
+
+
+/*responsive*/
+@media (max-width: 768px){
+    header{
+        grid-template-columns: 1fr;
+        grid-template-rows: auto auto auto;
+        gap: 1rem;
+        background-color: var(--negro-suave);
+    }
+
+    .son-grid1,
+    .son-grid2,
+    .son-grid3{
+        justify-content: center;
+    }
+
+    .son-grid2{
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .son-grid2 ul {
+        flex-direction: column;
+        gap: .5rem;
+        width: 100%;
+    }
+.items-menu:hover{
+    color: var(--negro-suave);
+    background-color: var(--verde-transparente);
+
+    }
+
+    .items-menu{
+        white-space: normal;
+        padding: 2px 4px;
+        gap: 1rem;
+    }
+    
+    #menu-btn{
+        display: block;
+    }
+
+    #menu{
+        display: none;
+    }
+
+    #menu.active{
+        display: block;
+    }
 }
