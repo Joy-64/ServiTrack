@@ -24,11 +24,11 @@ CREATE TABLE `carga_datos_personales` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `nombre` varchar(50) NOT NULL,
   `apellido` varchar(50) NOT NULL,
+  `cuit` decimal(50,0) NOT NULL,
   `telefono` varchar(50) NOT NULL,
   `ciudad` varchar(50) NOT NULL,
   `calle` varchar(50) NOT NULL,
   `numero_calle` decimal(25,0) NOT NULL,
-  `oficios` varchar(50) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -55,9 +55,28 @@ CREATE TABLE `oficios` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `nombre_del oficio` varchar(50) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 /*Data for the table `oficios` */
+
+insert  into `oficios`(`id`,`nombre_del oficio`) values (1,'Electricista'),(2,'Plomero'),(3,'Albañil'),(4,'Carpintero'),(5,'Pintor'),(6,'Cerrajero'),(7,'Herrero'),(8,'Gasista');
+
+/*Table structure for table `persona_oficio` */
+
+DROP TABLE IF EXISTS `persona_oficio`;
+
+CREATE TABLE `persona_oficio` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id_persona` int(11) DEFAULT NULL,
+  `id_oficio` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `fk_persona` (`id_persona`),
+  KEY `fk_oficio` (`id_oficio`),
+  CONSTRAINT `fk_oficio` FOREIGN KEY (`id_oficio`) REFERENCES `oficios` (`id`),
+  CONSTRAINT `fk_persona` FOREIGN KEY (`id_persona`) REFERENCES `carga_datos_personales` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+/*Data for the table `persona_oficio` */
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
