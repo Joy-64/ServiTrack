@@ -2,6 +2,8 @@
      margin: 0;
     padding: 0;
     box-sizing: border-box;
+    text-decoration: none;
+    list-style: none;
 }
 
 @font-face {
@@ -34,6 +36,7 @@
     --azul-intermedio: #3B82F6;
     --azul-oscuro: #1E3A5F;
     --verde: #34D399;
+    --verde-transparente: #34D39980;
     --violeta: #8B5CF6;
     --celeste: #22D3EE;
 
@@ -45,28 +48,7 @@
 }
 
 
-
-
-head{
-    background-color: var(--azul-oscuro);
-    
-}
-
 body{
     background-color: var(--gris-claro);
 }
-form{
-    margin:5rem;
-    height: 10%;
-    padding: 2rem ;
-    border:1rem solid var(--azul-oscuro);
-    font-size: 20px;
-}
 
-.cargatrabajo{ 
-    
-}
-
-footer{
-
-}
