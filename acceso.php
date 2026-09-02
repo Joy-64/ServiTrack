@@ -4,8 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Acceso ServiTrack</title>
+    <link rel="stylesheet" href="./css/style.css">
 </head>
-<body>
+<body class="pagina-acceso">
     <section class="top">
         <img src="./img/logo2.0.png" width="200px" height="100px"  alt="" class="logo-acceso">
     </section>
@@ -15,10 +16,31 @@
         <label for="correo">Correo electrónico</label>
         <input type="text" id="correo" name="correo">
         <label for="contrasena">Contraseña</label>
-        <input type="password" id="contrasena" name="contrasena">
-        <button type="button" id="btnContrasena" ><img src="./img/ojo.png" width="20px" height="20px" alt=""></button>
-         <button type="submit">Iniciar sesión</button>
-    <a href="" class="link-registrase">¿No tienes una cuenta?</a>
+       <div class="contenedor-contrasena">
+
+    <input
+        type="password"
+        id="contrasena"
+        name="contrasena"
+    >
+
+    <button
+        type="button"
+        id="btnContrasena"
+        aria-label="Mostrar contraseña"
+    >
+        <img
+            src="./img/ojo.png"
+            width="20"
+            height="20"
+            alt=""
+        >
+    </button>
+
+</div>
+   <a href="./registro.php" class="link-registrase">
+    ¿No tenés una cuenta? Registrate
+</a>
         </form>
        
         <script src="./js/acceso.js"></script>

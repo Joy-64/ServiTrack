@@ -137,7 +137,93 @@ header{
     background-color: #3B82F6;
 }
 
+/* PÁGINAS DE ACCESO Y REGISTRO */
 
+.pagina-acceso {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 20px;
+    background-color: var(--blanco-suave);
+    color: var(--negro-suave);
+    font-family: var(--texto);
+}
+
+.cuerpo-acceso {
+    width: 100%;
+    max-width: 420px;
+    padding: 32px;
+    background-color: white;
+    border: 1px solid var(--gris-claro);
+    border-radius: 16px;
+    box-shadow: 0 12px 30px rgba(30, 58, 95, 0.12);
+}
+
+.pagina-acceso .top {
+    margin-bottom: 16px;
+}
+
+.logo-acceso {
+    display: block;
+    width: 180px;
+    height: auto;
+}
+
+.cuerpo-acceso form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.cuerpo-acceso h2 {
+    margin-bottom: 10px;
+    color: var(--azul-oscuro);
+    font-family: var(--titulos);
+    font-size: 1.8rem;
+    text-align: center;
+}
+
+.cuerpo-acceso label {
+    margin-top: 5px;
+    color: var(--azul-oscuro);
+    font-family: var(--subtitulo);
+    font-size: 0.9rem;
+}
+
+.cuerpo-acceso input {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid var(--gris-claro);
+    border-radius: 10px;
+    color: var(--negro-suave);
+    font-family: var(--texto);
+    font-size: 1rem;
+    outline: none;
+}
+.contenedor-contrasena {
+    position: relative;
+    width: 100%;
+}
+
+.contenedor-contrasena input {
+    padding-right: 50px;
+}
+
+#btnContrasena {
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    transform: translateY(-50%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 6px;
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+}
 
 /*responsive*/
 @media (max-width: 768px){

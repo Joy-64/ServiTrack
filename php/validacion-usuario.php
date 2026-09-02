@@ -1,16 +1,22 @@
 <?php
 
-$conexion= mysqli_connect("localhost", "root", "", "servitrack", 3307);
+require_once __DIR__ . "/conexion.php";
 
 $correo= $_POST['correo'];
 $contrasena=$_POST['contrasena'];
 
-$sql = "SELECT * FROM usuarios WHERE correo='$correo' AND contrasena='$contrasena'";
+$sql = "SELECT * FROM usuarios WHERE correo = :correo";
 
-$resultado= mysqli_query($conexion,$sql);
+$consulta = $conexion->prepare($sql);
 
-if(mysqli_num_rows($resultado)>0){
+$consulta->execute([
+    "correo" => $correo
+]);
+
+$usuario = $consulta->fetch();
+
+if ($usuario && password_verify($contrasena, $usuario["contrasena"])) {
     echo "Login correcto";
-}else{
-   echo "Correo o contraseña incorrectos";
+} else {
+    echo "Correo o contraseña incorrectos";
 }
