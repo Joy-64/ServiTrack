@@ -34,6 +34,24 @@ CREATE TABLE `carga_datos_personales` (
 
 /*Data for the table `carga_datos_personales` */
 
+/*Table structure for table `clientes` */
+
+DROP TABLE IF EXISTS `clientes`;
+
+CREATE TABLE `clientes` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id_persona` int(11) DEFAULT NULL,
+  `nombre` varchar(50) DEFAULT NULL,
+  `telefono` varchar(20) DEFAULT NULL,
+  `mail` varchar(100) DEFAULT NULL,
+  `direccion` varchar(100) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `clientes_ibfk_1` (`id_persona`),
+  CONSTRAINT `clientes_ibfk_1` FOREIGN KEY (`id_persona`) REFERENCES `carga_datos_personales` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+/*Data for the table `clientes` */
+
 /*Table structure for table `contactanos` */
 
 DROP TABLE IF EXISTS `contactanos`;
@@ -77,6 +95,25 @@ CREATE TABLE `persona_oficio` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 /*Data for the table `persona_oficio` */
+
+/*Table structure for table `trabajos` */
+
+DROP TABLE IF EXISTS `trabajos`;
+
+CREATE TABLE `trabajos` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id_cliente` int(11) DEFAULT NULL,
+  `fecha` date DEFAULT NULL,
+  `presupuesto` text DEFAULT NULL,
+  `descripcion` text DEFAULT NULL,
+  `horas` decimal(10,0) DEFAULT NULL,
+  `estado` tinyint(1) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `trabajos_ibfk_1` (`id_cliente`),
+  CONSTRAINT `trabajos_ibfk_1` FOREIGN KEY (`id_cliente`) REFERENCES `clientes` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+/*Data for the table `trabajos` */
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
