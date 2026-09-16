@@ -4,8 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Acceso ServiTrack</title>
+    <link rel="stylesheet" href="./css/style.css">
 </head>
-<body>
+<body class="pagina-acceso">
     <section class="top">
         <img src="./img/logo2.0.png" width="200px" height="100px"  alt="" class="logo-acceso">
     </section>
