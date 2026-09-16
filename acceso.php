@@ -36,7 +36,9 @@
             alt=""
         >
     </button>
-
+<button type="submit" class="boton-ingresar">
+    Iniciar sesión
+</button>
 </div>
    <a href="./registro.php" class="link-registrase">
     ¿No tenés una cuenta? Registrate
