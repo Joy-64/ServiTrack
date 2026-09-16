@@ -1,8 +1,8 @@
 /*
 SQLyog Ultimate v9.63 
-MySQL - 5.5.5-10.4.32-MariaDB : Database - servitrack
+MySQL - 5.5.5-10.4.32-MariaDB : Database - servitrackapp_servitrack
 *********************************************************************
-*/
+*/carga_datos_personales
 
 /*!40101 SET NAMES utf8 */;
 
@@ -21,16 +21,16 @@ USE `servitrack`;
 DROP TABLE IF EXISTS `carga_datos_personales`;
 
 CREATE TABLE `carga_datos_personales` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `nombre` varchar(50) NOT NULL,
-  `apellido` varchar(50) NOT NULL,
-  `telefono` varchar(50) NOT NULL,
-  `ciudad` varchar(50) NOT NULL,
-  `calle` varchar(50) NOT NULL,
-  `numero_calle` decimal(25,0) NOT NULL,
-  `oficios` varchar(50) NOT NULL,
+  `id` INT(11) NOT NULL AUTO_INCREMENT,
+  `nombre` VARCHAR(50) NOT NULL,
+  `apellido` VARCHAR(50) NOT NULL,
+  `telefono` VARCHAR(50) NOT NULL,
+  `ciudad` VARCHAR(50) NOT NULL,
+  `calle` VARCHAR(50) NOT NULL,
+  `numero_calle` DECIMAL(25,0) NOT NULL,
+  `oficios` VARCHAR(50) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=INNODB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 /*Data for the table `carga_datos_personales` */
 
@@ -39,11 +39,11 @@ CREATE TABLE `carga_datos_personales` (
 DROP TABLE IF EXISTS `contactanos`;
 
 CREATE TABLE `contactanos` (
-  `nombre` varchar(50) DEFAULT NULL,
-  `correo_electronico` varchar(50) DEFAULT NULL,
-  `telefono` varchar(50) DEFAULT NULL,
-  `mensaje` varchar(255) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+  `nombre` VARCHAR(50) DEFAULT NULL,
+  `correo_electronico` VARCHAR(50) DEFAULT NULL,
+  `telefono` VARCHAR(50) DEFAULT NULL,
+  `mensaje` VARCHAR(255) DEFAULT NULL
+) ENGINE=INNODB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 /*Data for the table `contactanos` */
 
@@ -52,10 +52,10 @@ CREATE TABLE `contactanos` (
 DROP TABLE IF EXISTS `oficios`;
 
 CREATE TABLE `oficios` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `nombre_del oficio` varchar(50) DEFAULT NULL,
+  `id` INT(11) NOT NULL AUTO_INCREMENT,
+  `nombre_del oficio` VARCHAR(50) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=INNODB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 /*Data for the table `oficios` */
 
