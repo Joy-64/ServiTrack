@@ -77,7 +77,7 @@
                 required
             >
 
-            <button type="submit">Crear cuenta</button>
+            <button type="submit" class="boton-ingresar" >Crear cuenta</button>
 
             <a href="./acceso.php" class="link-registrase">
                 ¿Ya tenés una cuenta? Iniciá sesión
