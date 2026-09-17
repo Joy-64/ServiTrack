@@ -34,15 +34,15 @@
     </header>
     <!--ACA TERMINA-->
     <!--ACA EMPIEZA EL CARRUSEL-->
-    <section class="carrusel" aria-label="Presentación de ServiTrack">
+    <section class="carrusel" aria-label="ServiTrack a tu alcance">
 
     <div class="carrusel-contenedor">
 
         <article class="carrusel-slide activo">
-            <img src="./img/OFICIOS 1.jpg" alt="Profesional realizando un trabajo">
+            <img src="./img/OFICIOS 1.jpg" alt="Nuestros Profesionales">
             <div class="carrusel-texto">
-                <h1>Encontrá el profesional que necesitás</h1>
-                <p>Conectamos personas con trabajadores de confianza.</p>
+                <h2>A tu servicio</h2>
+                <p>Conectamos personas con trabajadores de confianza</p>
             </div>
         </article>
 
@@ -50,7 +50,7 @@
             <img src="./img/oficio2.jpg" alt="Trabajador utilizando herramientas">
             <div class="carrusel-texto">
                 <h2>Servicios cerca de vos</h2>
-                <p>Buscá profesionales disponibles en tu zona.</p>
+                <p>Busca profesionales disponibles en tu zona</p>
             </div>
         </article>
 
@@ -58,17 +58,17 @@
             <img src="./img/OFICIO3.jpg" alt="Cliente satisfecho con un servicio">
             <div class="carrusel-texto">
                 <h2>Tus trabajos, bajo control</h2>
-                <p>Organizá y seguí cada servicio desde un solo lugar.</p>
+                <p>Organizá y seguí cada servicio desde un solo lugar</p>
             </div>
         </article>
 
     </div>
 
-    <button class="carrusel-flecha carrusel-anterior" type="button" aria-label="Imagen anterior">
+    <button id="slideAnterior" class="carrusel-flecha carrusel-anterior" type="button" aria-label="Imagen anterior">
         &#10094;
     </button>
 
-    <button class="carrusel-flecha carrusel-siguiente" type="button" aria-label="Imagen siguiente">
+    <button id="slideSiguiente" class="carrusel-flecha carrusel-siguiente" type="button" aria-label="Imagen siguiente">
         &#10095;
     </button>
 
@@ -89,7 +89,9 @@
     <script src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js"></script>
     <!-- Leaflet base -->
     <script src="./js/mapa.js"></script>
-    <script src="./js/script.js"></script>
+    <script src="./js/script.js">
+    </script>
+    <script src="./js/carrusel.js"></script>
 </body>
 
 </html>
