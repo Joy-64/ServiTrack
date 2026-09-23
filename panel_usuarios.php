@@ -1,3 +1,4 @@
+<?php require_once 'modelo/usuarios.php'; ?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -51,10 +52,12 @@
                 <tr>
                     <th>ID</th>
                     <th>Nombre</th>
-                    <th>Correo</th>
+                    <th>Oficio</th>
+                    <th>Teléfono</th>
+                    <th>Email</th>
                     <th>Acciones</th>
                 </tr>
-            </thead>q
+            </thead>
             <tbody>
                 <?php $usuarios = Usuario::obtenerTodas(); foreach ($usuarios as $u): ?>
                 <tr>
@@ -63,8 +66,6 @@
                     <td><?php echo $u->Oficio; ?></td>
                     <td><?php echo $u->Telefono; ?></td>
                     <td><?php echo $u->Email; ?></td>
-                    <td><?php echo $u->Imagen; ?></td>
-                    
                     <td>
                         <a href="ver.php?id=<?php echo $u->Id; ?>" class="btn btn-sm btn-primary">Ver</a>
                         <a href="editar.php?id=<?php echo $u->Id; ?>" class="btn btn-sm btn-warning">Editar</a>
