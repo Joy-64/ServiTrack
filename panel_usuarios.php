@@ -43,7 +43,7 @@
                 <h1>Usuarios</h1>
             </div>
             <div class="col text-end">
-                <a href="editar.php" class="btn btn-success">+ Agregar</a>
+                <a href="usuarios/vistas/editar.php" class="btn btn-success">+ Agregar</a>
             </div>
         </div>
 
@@ -67,9 +67,9 @@
                     <td><?php echo $u->Telefono; ?></td>
                     <td><?php echo $u->Email; ?></td>
                     <td>
-                        <a href="ver.php?id=<?php echo $u->Id; ?>" class="btn btn-sm btn-primary">Ver</a>
-                        <a href="editar.php?id=<?php echo $u->Id; ?>" class="btn btn-sm btn-warning">Editar</a>
-                        <form method="POST" action="../acciones.php" style="display:inline;">
+                        <a href="usuarios/vistas/ver.php?id=<?php echo $u->Id; ?>" class="btn btn-sm btn-primary">Ver</a>
+                        <a href="usuarios/vistas/editar.php?id=<?php echo $u->Id; ?>" class="btn btn-sm btn-warning">Editar</a>
+                        <form method="POST" action="usuarios/acciones.php" style="display:inline;">
                             <input type="hidden" name="accion" value="eliminar">
                             <input type="hidden" name="id" value="<?php echo $u->Id; ?>">
                             <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('¿Está seguro?')">Eliminar</button>
