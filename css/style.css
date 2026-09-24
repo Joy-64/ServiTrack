@@ -171,6 +171,20 @@ input {
 /*aca termina el header*/
 /*ACA empieza el sector Demo*/
 
+.presentacion{
+     display: flex;
+    flex-direction: row;
+    gap: 1rem;
+    justify-content: center;
+}
+.presentacion img{
+    border-radius: 2%;
+    width:100% ; 
+}
+.presentacion a{
+   flex: 1;
+}
+
 .clase-section{
     padding: 1rem ;
 }

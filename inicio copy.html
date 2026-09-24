@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ServiTrack</title>
+    <link rel="icon" href="./img/logo3.0.jpeg" />
+    <link rel="stylesheet" href="./css/style.css" />
+    <!--LINKS para que funcione el mapa-->
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+      integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+      crossorigin=""
+    />
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.css"
+    />
+  </head>
+  <body>
+    <header>
+    <div class="header-logo">
+      <a href="inicio.html">
+        <img
+          src="./img/logo2.0.png"
+          width="200px"
+          height="100px"
+          alt="Logo ServiTrack"
+        />
+      </a>
+    </div>
+    <button id="menu-btn">
+      <img src="./img/menu.png" width="20px" height="20px" alt="menu" />
+    </button>
+    <nav class="header-nav" id="menu">
+      <ul>
+        <li><a class="items-menu" href="">¿Quiénes somos?</a></li>
+        <li><a class="items-menu" href="">Nuestro trabajo</a></li>
+        <li><a class="items-menu" href="">Demo</a></li>
+        <li><a class="items-menu" href="">Contacto</a></li>
+      </ul>
+    </nav>
+    <div class="header-boton">
+      <button class="boton"><a class="login" href="">Acceso</a></button>
+    </div>
+  </header>
+    
+
+    <!--ACA empieza el Demo-->
+
+    <!--ACA esta el link para js, que se conecta con el html: los primeros son para que funcione  el mapa del DEMO-->
+
+    <main>
+      <div class="presentacion">
+      <a href="http://">
+        <img src="/img/carga tus clientes-1.jpg" alt="carga tus clientes" />
+      </a>
+
+      <a href="CargaDeTrabajo.html">
+        <img src="/img/crea presupuesto-2.jpg" alt="crea tu presupuesto" />
+      </a>
+
+      <a href="">
+        <img src="/img/controla tus trabajos-3.jpg" alt="Carga tus trabajos" />
+      </a>
+    </div>
+    </main>
+    <aside>
+      <h2>Barra lateral</h2>
+    </aside>
+
+    <!--ACA comienza el footer, que incluye logo sin texto, links como en el header y boton de descarga de app-->
+
+    <footer class="footer">
+      <div class="footer-logo">
+        <a href="inicio.html">
+          <img
+            src="./img/logo 2.1.png"
+            width="100px"
+            height="100px"
+            alt="Logo ServiTrack"
+          />
+        </a>
+      </div>
+
+      <nav class="foot-enlace">
+        <a href="index.html">Inicio</a>
+        <a href="servicios.html">Servicios</a>
+        <a href="quienes-somos.html">Quienes somos</a>
+        <a href="contacto.html">Contacto</a>
+      </nav>
+
+      <p class="derechos">
+        &copy; @año | ServiTrack. Todos los derechos reservados.
+      </p>
+    </footer>
+  </body>
+</html>
