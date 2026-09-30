@@ -1,0 +1,41 @@
+*Nuevas tablas a incorporar*
+
+Tabla datos personales -> Trabajadores
+Id
+nombre
+apellido
+Tdoc
+Ndoc
+Fnacimiento
+Sexo
+Cuil
+
+Tabla alterna: tipos_contactos
+Id
+descrpicion
+
+Tabla trabajador_medio.contacto
+Id
+idtrabjador
+idtipocontacto
+valor
+
+Tabla oficios
+Id
+Descripcion
+
+Tabla trabajador_oficio
+Id
+Idtrabajador
+Idoficio
+
+Tabla codigo_postal
+Id
+Codigo
+Localidad
+
+Tabla domicilio_trabajador
+Id
+Idtrabajador
+Valor
+Idcodpostal
