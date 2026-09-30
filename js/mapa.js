@@ -11,8 +11,9 @@ map.setMaxBounds(limitesRosario);
 map.options.maxBoundsViscosity = 1;
 map.setMinZoom(12.5);
 
-L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+L.tileLayer('https://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png', {
+    maxZoom: 19,
+    attribution: '&copy; OpenStreetMap contributors'
 }).addTo(map);
 
 L.marker([-32.9468, -60.6393]).addTo(map)
