@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schemadesigner version="6.5">
+<source>
+<database charset="utf8mb4" collation="utf8mb4_general_ci">servitrack</database>
+</source>
+<canvas zoom="100">
+<tables>
+<table name="codigo_postal" view="colnames">
+<left>30</left>
+<top>328</top>
+<width>131</width>
+<height>129</height>
+<sql_create_table>CREATE TABLE `codigo_postal` (
+  `id` bigint(11) NOT NULL AUTO_INCREMENT,
+  `codpostal` varchar(10) NOT NULL,
+  `localidad` varchar(50) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4</sql_create_table>
+</table>
+<table name="oficios" view="colnames">
+<left>636</left>
+<top>34</top>
+<width>110</width>
+<height>112</height>
+<sql_create_table>CREATE TABLE `oficios` (
+  `id` bigint(11) NOT NULL AUTO_INCREMENT,
+  `descripcion` varchar(50) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4</sql_create_table>
+</table>
+<table name="tipos_documentos" view="colnames">
+<left>5</left>
+<top>25</top>
+<width>140</width>
+<height>147</height>
+<sql_create_table>CREATE TABLE `tipos_documentos` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `descripcion` varchar(50) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4</sql_create_table>
+</table>
+<table name="trabajadores" view="colnames">
+<left>196</left>
+<top>98</top>
+<width>115</width>
+<height>214</height>
+<sql_create_table>CREATE TABLE `trabajadores` (
+  `id` bigint(11) NOT NULL AUTO_INCREMENT,
+  `nombre` varchar(50) NOT NULL,
+  `apellido` varchar(50) NOT NULL,
+  `idTDoc` bigint(50) NOT NULL,
+  `NDoc` decimal(9,0) NOT NULL,
+  `FNacimiento` date NOT NULL,
+  `Sexo` varchar(20) NOT NULL,
+  `Cuil` decimal(11,0) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `idTDoc` (`idTDoc`),
+  CONSTRAINT `trabajadores_ibfk_1` FOREIGN KEY (`idTDoc`) REFERENCES `tipos_documentos` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4</sql_create_table>
+</table>
+<table name="trabajador_oficio" view="colnames">
+<left>396</left>
+<top>14</top>
+<width>159</width>
+<height>129</height>
+<sql_create_table>CREATE TABLE `trabajador_oficio` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `id_trabajador` bigint(20) DEFAULT NULL,
+  `id_oficio` bigint(20) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `id_trabajador` (`id_trabajador`),
+  KEY `id_oficio` (`id_oficio`),
+  CONSTRAINT `trabajador_oficio_ibfk_1` FOREIGN KEY (`id_trabajador`) REFERENCES `trabajadores` (`id`),
+  CONSTRAINT `trabajador_oficio_ibfk_2` FOREIGN KEY (`id_oficio`) REFERENCES `oficios` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4</sql_create_table>
+</table>
+<table name="domicilio_trabajador" view="colnames">
+<left>337</left>
+<top>350</top>
+<width>163</width>
+<height>146</height>
+<sql_create_table>CREATE TABLE `domicilio_trabajador` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `id_trabajador` bigint(20) DEFAULT NULL,
+  `id_cod_postal` bigint(20) DEFAULT NULL,
+  `valor` varchar(50) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `id_trabajador` (`id_trabajador`),
+  KEY `id_cod_postal` (`id_cod_postal`),
+  CONSTRAINT `domicilio_trabajador_ibfk_1` FOREIGN KEY (`id_trabajador`) REFERENCES `trabajadores` (`id`),
+  CONSTRAINT `domicilio_trabajador_ibfk_2` FOREIGN KEY (`id_cod_postal`) REFERENCES `codigo_postal` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4</sql_create_table>
+</table>
+<table name="medios_contactos" view="colnames">
+<left>553</left>
+<top>294</top>
+<width>146</width>
+<height>112</height>
+<sql_create_table>CREATE TABLE `medios_contactos` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `descripcion` varchar(50) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4</sql_create_table>
+</table>
+<table name="trabajador_medios_contactos" view="colnames">
+<left>739</left>
+<top>177</top>
+<width>206</width>
+<height>129</height>
+<sql_create_table>CREATE TABLE `trabajador_medios_contactos` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `id_trabajador` bigint(20) DEFAULT NULL,
+  `id_medio_contacto` bigint(20) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `id_trabajador` (`id_trabajador`),
+  KEY `id_medio_contacto` (`id_medio_contacto`),
+  CONSTRAINT `trabajador_medios_contactos_ibfk_1` FOREIGN KEY (`id_trabajador`) REFERENCES `trabajadores` (`id`),
+  CONSTRAINT `trabajador_medios_contactos_ibfk_2` FOREIGN KEY (`id_medio_contacto`) REFERENCES `medios_contactos` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4</sql_create_table>
+</table>
+</tables>
+</canvas>
+</schemadesigner>
