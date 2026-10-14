@@ -1,0 +1,85 @@
+/* carga-clientes.css
+   Extras de CargaDeClientes.html: direcciones repetibles, sección plegable
+   y casillas sueltas. La base de los formularios está en carga-trabajo.css,
+   así que este archivo va DESPUÉS de ese. */
+
+/* Casilla suelta con su texto (ej: "El WhatsApp es el mismo número") */
+.casilla {
+    display: flex;
+    align-items: center;
+    gap: .5rem;
+    font-family: var(--texto);
+    cursor: pointer;
+}
+
+.casilla input { padding: 0; }
+
+/* Una dirección: tarjeta interna dentro de la sección Direcciones */
+.direccion {
+    border: 1px solid var(--gris-claro);
+    border-radius: 10px;
+    background-color: #fff;
+    padding: .9rem 1rem 1rem;
+    margin-bottom: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: .75rem;
+}
+
+.direccion-cab {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.direccion-titulo {
+    font-family: var(--subtitulo);
+    color: var(--azul-oscuro);
+    margin-right: auto;
+}
+
+/* Calle y número ocupa más lugar que los otros campos de la fila */
+.campo-ancho { flex: 2; }
+
+.quitar {
+    border: 1px solid var(--gris-oscuro);
+    border-radius: 8px;
+    background-color: transparent;
+    padding: 4px 12px;
+    font-family: var(--texto);
+    cursor: pointer;
+}
+
+.quitar:hover { background-color: var(--gris-claro); }
+.quitar[hidden] { display: none; }
+
+/* El atributo hidden debe ganarle a display:flex de .fila */
+.fila[hidden] { display: none; }
+
+/* Facturación: sección plegable con el mismo aspecto que las tarjetas */
+.plegable {
+    background-color: var(--blanco-suave);
+    border: 1px solid var(--gris-oscuro);
+    border-radius: 12px;
+    margin-bottom: 1.25rem;
+}
+
+.plegable summary {
+    padding: 1rem 1.25rem;
+    font-family: var(--subtitulo);
+    color: var(--azul-oscuro);
+    cursor: pointer;
+}
+
+.plegable-cuerpo { padding: 0 1.25rem 1.25rem; }
+
+.plegable summary:focus-visible,
+.casilla input:focus-visible,
+.quitar:focus-visible {
+    outline: 3px solid var(--azul-intermedio);
+    outline-offset: 2px;
+}
+
+/* Campo de solo lectura (WhatsApp copiado del teléfono) */
+.carga-form input[readonly] { background-color: var(--gris-claro); }

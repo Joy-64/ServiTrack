@@ -1,0 +1,146 @@
+/* panel.css
+   Estilos de panel.php: contadores, tarjetas de acceso y listas de trabajos.
+   Va DESPUÉS de style.css porque usa sus variables de color y tipografía. */
+
+/* Contenedor central y títulos */
+.panel {
+    max-width: 1000px;
+    margin: 2rem auto;
+    padding: 0 1rem;
+    font-family: var(--texto);
+    color: var(--negro-suave);
+}
+
+.panel-titulo {
+    font-family: var(--titulos);
+    color: var(--azul-oscuro);
+    margin-bottom: 1rem;
+}
+
+.panel-sub {
+    font-family: var(--subtitulo);
+    color: var(--azul-oscuro);
+    font-size: 1.15rem;
+    margin-bottom: .75rem;
+}
+
+/* Resumen: tres contadores en fila */
+.resumen {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+
+.dato {
+    background-color: var(--azul-oscuro);
+    color: var(--blanco-suave);
+    border-radius: 12px;
+    padding: 1.1rem 1.25rem;
+    display: flex;
+    flex-direction: column;
+}
+
+.dato strong {
+    font-family: var(--titulos);
+    font-size: 2.2rem;
+    line-height: 1.1;
+}
+
+.dato span { color: var(--azul-claro); }
+
+.dato-pend { background-color: var(--violeta); }
+.dato-pend span { color: var(--blanco-suave); }
+
+/* Accesos rápidos: tarjetas clicables (se ponen verdes al pasar el mouse) */
+.accesos {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+
+.acceso {
+    display: flex;
+    flex-direction: column;
+    gap: .35rem;
+    background-color: var(--blanco-suave);
+    border: 2px solid var(--azul-claro);
+    border-radius: 12px;
+    padding: 1.25rem;
+    color: var(--negro-suave);
+}
+
+.acceso b {
+    font-family: var(--subtitulo);
+    font-size: 1.1rem;
+    color: var(--azul-oscuro);
+}
+
+.acceso span { color: var(--gris-oscuro); }
+
+.acceso:hover,
+.acceso:focus-visible {
+    background-color: var(--verde-transparente);
+    border-color: var(--verde);
+    transition: 300ms;
+}
+
+.acceso:focus-visible,
+.caja a:focus-visible {
+    outline: 3px solid var(--azul-intermedio);
+    outline-offset: 2px;
+}
+
+/* Listas de pendientes y últimos trabajos, con distintivo de estado */
+.listas {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+
+.caja {
+    background-color: var(--blanco-suave);
+    border-radius: 12px;
+    padding: 1.1rem 1.25rem;
+}
+
+.items li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    padding: .7rem 0;
+    border-bottom: 1px solid var(--gris-claro);
+}
+
+.items li:last-child { border-bottom: none; }
+
+.items li div {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+}
+
+.items li span { color: var(--gris-oscuro); font-size: .92rem; }
+.items li small { color: var(--gris-oscuro); white-space: nowrap; }
+
+.estado {
+    border-radius: 999px;
+    padding: 3px 10px;
+    font-family: var(--subtitulo);
+}
+
+.items .estado-ok   { background-color: var(--verde-transparente); color: var(--negro-suave); }
+.items .estado-pend { background-color: var(--violeta); color: var(--blanco-suave); }
+
+.vacio { color: var(--gris-oscuro); }
+.vacio a { color: var(--azul-intermedio); text-decoration: underline; }
+
+/* Celular: todo en una sola columna */
+@media (max-width: 768px) {
+    .resumen,
+    .accesos,
+    .listas { grid-template-columns: 1fr; }
+}
