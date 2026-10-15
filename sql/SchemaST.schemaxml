@@ -18,9 +18,9 @@
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4</sql_create_table>
 </table>
 <table name="oficios" view="colnames">
-<left>636</left>
-<top>34</top>
-<width>110</width>
+<left>818</left>
+<top>75</top>
+<width>122</width>
 <height>112</height>
 <sql_create_table>CREATE TABLE `oficios` (
   `id` bigint(11) NOT NULL AUTO_INCREMENT,
@@ -40,8 +40,8 @@
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4</sql_create_table>
 </table>
 <table name="trabajadores" view="colnames">
-<left>196</left>
-<top>98</top>
+<left>217</left>
+<top>141</top>
 <width>115</width>
 <height>214</height>
 <sql_create_table>CREATE TABLE `trabajadores` (
@@ -49,18 +49,20 @@
   `nombre` varchar(50) NOT NULL,
   `apellido` varchar(50) NOT NULL,
   `idTDoc` bigint(50) NOT NULL,
-  `NDoc` decimal(9,0) NOT NULL,
-  `FNacimiento` date NOT NULL,
-  `Sexo` varchar(20) NOT NULL,
-  `Cuil` decimal(11,0) NOT NULL,
+  `nDoc` decimal(9,0) NOT NULL,
+  `fNacimiento` date NOT NULL,
+  `sexo` varchar(20) NOT NULL,
+  `cuil` decimal(11,0) NOT NULL,
+  `idUsuarios` bigint(11) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `idTDoc` (`idTDoc`),
-  CONSTRAINT `trabajadores_ibfk_1` FOREIGN KEY (`idTDoc`) REFERENCES `tipos_documentos` (`id`)
+  CONSTRAINT `trabajadores_ibfk_2` FOREIGN KEY (`id`) REFERENCES `usuarios` (`idUsuario`),
+  CONSTRAINT `trabajadores_ibfk_3` FOREIGN KEY (`id`) REFERENCES `tipos_documentos` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4</sql_create_table>
 </table>
 <table name="trabajador_oficio" view="colnames">
-<left>396</left>
-<top>14</top>
+<left>549</left>
+<top>69</top>
 <width>159</width>
 <height>129</height>
 <sql_create_table>CREATE TABLE `trabajador_oficio` (
@@ -75,8 +77,8 @@
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4</sql_create_table>
 </table>
 <table name="domicilio_trabajador" view="colnames">
-<left>337</left>
-<top>350</top>
+<left>363</left>
+<top>351</top>
 <width>163</width>
 <height>146</height>
 <sql_create_table>CREATE TABLE `domicilio_trabajador` (
@@ -92,8 +94,8 @@
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4</sql_create_table>
 </table>
 <table name="medios_contactos" view="colnames">
-<left>553</left>
-<top>294</top>
+<left>633</left>
+<top>391</top>
 <width>146</width>
 <height>112</height>
 <sql_create_table>CREATE TABLE `medios_contactos` (
@@ -103,9 +105,9 @@
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4</sql_create_table>
 </table>
 <table name="trabajador_medios_contactos" view="colnames">
-<left>739</left>
-<top>177</top>
-<width>206</width>
+<left>803</left>
+<top>258</top>
+<width>156</width>
 <height>129</height>
 <sql_create_table>CREATE TABLE `trabajador_medios_contactos` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
@@ -117,6 +119,19 @@
   CONSTRAINT `trabajador_medios_contactos_ibfk_1` FOREIGN KEY (`id_trabajador`) REFERENCES `trabajadores` (`id`),
   CONSTRAINT `trabajador_medios_contactos_ibfk_2` FOREIGN KEY (`id_medio_contacto`) REFERENCES `medios_contactos` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4</sql_create_table>
+</table>
+<table name="usuarios" view="colnames">
+<left>361</left>
+<top>7</top>
+<width>130</width>
+<height>146</height>
+<sql_create_table>CREATE TABLE `usuarios` (
+  `idUsuario` bigint(20) NOT NULL AUTO_INCREMENT,
+  `correo` varchar(100) NOT NULL,
+  `contrasena` varchar(250) NOT NULL,
+  `rol` varchar(20) NOT NULL,
+  KEY `id_usuario` (`idUsuario`)
+) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8mb4</sql_create_table>
 </table>
 </tables>
 </canvas>

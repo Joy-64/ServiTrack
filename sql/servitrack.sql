@@ -35,10 +35,10 @@ DROP TABLE IF EXISTS `contactanos`;
 
 CREATE TABLE `contactanos` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `nombre` varchar(50) DEFAULT NULL,
-  `correo_electronico` varchar(50) DEFAULT NULL,
+  `nombre` varchar(50) NOT NULL,
+  `correo_electronico` varchar(50) NOT NULL,
   `telefono` varchar(50) DEFAULT NULL,
-  `mensaje` varchar(255) DEFAULT NULL,
+  `mensaje` varchar(255) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4;
 
@@ -145,16 +145,34 @@ CREATE TABLE `trabajadores` (
   `nombre` varchar(50) NOT NULL,
   `apellido` varchar(50) NOT NULL,
   `idTDoc` bigint(50) NOT NULL,
-  `NDoc` decimal(9,0) NOT NULL,
-  `FNacimiento` date NOT NULL,
-  `Sexo` varchar(20) NOT NULL,
-  `Cuil` decimal(11,0) NOT NULL,
+  `nDoc` decimal(9,0) NOT NULL,
+  `fNacimiento` date NOT NULL,
+  `sexo` varchar(20) NOT NULL,
+  `cuil` decimal(11,0) NOT NULL,
+  `idUsuarios` bigint(11) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `idTDoc` (`idTDoc`),
-  CONSTRAINT `trabajadores_ibfk_1` FOREIGN KEY (`idTDoc`) REFERENCES `tipos_documentos` (`id`)
+  CONSTRAINT `trabajadores_ibfk_2` FOREIGN KEY (`id`) REFERENCES `usuarios` (`idUsuario`),
+  CONSTRAINT `trabajadores_ibfk_3` FOREIGN KEY (`id`) REFERENCES `tipos_documentos` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 /*Data for the table `trabajadores` */
+
+/*Table structure for table `usuarios` */
+
+DROP TABLE IF EXISTS `usuarios`;
+
+CREATE TABLE `usuarios` (
+  `idUsuario` bigint(20) NOT NULL AUTO_INCREMENT,
+  `correo` varchar(100) NOT NULL,
+  `contrasena` varchar(250) NOT NULL,
+  `rol` varchar(20) NOT NULL,
+  KEY `id_usuario` (`idUsuario`)
+) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8mb4;
+
+/*Data for the table `usuarios` */
+
+insert  into `usuarios`(`idUsuario`,`correo`,`contrasena`,`rol`) values (14,'rcedaro@gmail.com','12345','usuario'),(15,'joy@gmail.com','1234','admin');
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
