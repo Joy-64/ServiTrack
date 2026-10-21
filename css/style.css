@@ -103,7 +103,11 @@ header{
 }
 
 .foot-enlace a{
-    padding: 0 3rem;
+    /* clamp(mín, ideal, máx): la separación entre enlaces se achica en celular */
+    padding: 0 clamp(.5rem, 2vw, 3rem);
+    /* inline-block + margin: si los enlaces no entran en un renglón, bajan prolijos */
+    display: inline-block;
+    margin: .25rem 0;
     color: white;
 }
 /*CLASES RENOMBRADAS PARA QUE SU FUNCION SEA MAS CLARA*/
@@ -123,7 +127,8 @@ header{
 .foot-enlace{
 
     text-align: center;
-    padding: 3rem;
+    /* antes 3rem fijo: ahora entre 1rem y 3rem según el ancho de pantalla (4vw = 4% del ancho) */
+    padding: clamp(1rem, 4vw, 3rem);
 
 }
 input {
@@ -191,7 +196,9 @@ input {
 
 #map{
     width: 100%;
-    height: 50rem;
+    /* antes 50rem fijo (800px, enorme en celular). Ahora: mínimo 20rem, ideal 60% del alto
+       de la pantalla (60vh) y máximo 50rem */
+    height: clamp(20rem, 60vh, 50rem);
     background-color: #3B82F6;
 }
 

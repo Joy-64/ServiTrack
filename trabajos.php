@@ -2,6 +2,8 @@
 // trabajos.php
 // Lista de todos los trabajos, con pestañas por estado, buscador por cliente,
 // resumen, total por cliente, estado de cobro y aviso de trabajos atrasados.
+// Cada columna de la tabla se puede ordenar de menor a mayor y de mayor a menor
+// tocando su encabezado (el orden viaja por la URL: ?orden=id&dir=desc).
 // Usa datos de ejemplo (datos_ejemplo.php). No necesita JavaScript.
 
 require "datos_ejemplo.php";
@@ -37,6 +39,33 @@ function dias_desde($fecha) {
     return floor((time() - strtotime($fecha)) / 86400);
 }
 
+// Devuelve el dato de un trabajo que se usa para comparar, según la columna elegida.
+// Los textos se pasan a minúscula con strtolower para que "ana" y "Ana" se ordenen igual.
+function valor_columna($t, $columna) {
+    if ($columna == "id") {
+        return $t["id"];
+    }
+    if ($columna == "fecha") {
+        return $t["fecha"];                       // AAAA-MM-DD se puede comparar como texto
+    }
+    if ($columna == "cliente") {
+        return strtolower($t["cliente"]);
+    }
+    if ($columna == "trabajo") {
+        return strtolower($t["descripcion"]);
+    }
+    if ($columna == "horas") {
+        return $t["horas"];
+    }
+    if ($columna == "total") {
+        return total_trabajo($t);
+    }
+    if ($columna == "estado") {
+        return $t["estado"];                      // 0 = en curso, 1 = terminado
+    }
+    return $t["cobrado"];                         // la última columna posible es "cobro"
+}
+
 // ---------- 1) Leer los filtros de la URL ----------
 // Los enlaces y el buscador mandan los datos por GET: trabajos.php?estado=curso&buscar=marta
 $estado = "todos";
@@ -49,19 +78,30 @@ if (isset($_GET["buscar"])) {
     $buscar = trim($_GET["buscar"]);
 }
 
-// Formas de ordenar: clave => texto que ve la persona
-$ordenes = [
-    "fecha_desc"   => "Más nuevos primero",
-    "fecha_asc"    => "Más viejos primero",
-    "total_desc"   => "Total: de mayor a menor",
-    "total_asc"    => "Total: de menor a mayor",
-    "cliente_asc"  => "Cliente: A-Z",
-    "cliente_desc" => "Cliente: Z-A",
+// Columnas que se pueden ordenar: clave => título que ve la persona.
+// La clave es lo que viaja por la URL (?orden=id). "Acciones" no está porque son botones.
+$columnas = [
+    "id"      => "ID",
+    "fecha"   => "Fecha",
+    "cliente" => "Cliente",
+    "trabajo" => "Trabajo",
+    "horas"   => "Horas",
+    "total"   => "Total",
+    "estado"  => "Estado",
+    "cobro"   => "Cobro",
 ];
-$orden = "fecha_desc";
-// isset($ordenes[...]) comprueba que la clave recibida exista (así no se acepta cualquier cosa)
-if (isset($_GET["orden"]) && isset($ordenes[$_GET["orden"]])) {
+
+// Por defecto: más nuevos primero (fecha de mayor a menor)
+$orden = "fecha";
+// isset($columnas[...]) comprueba que la clave recibida exista (así no se acepta cualquier cosa)
+if (isset($_GET["orden"]) && isset($columnas[$_GET["orden"]])) {
     $orden = $_GET["orden"];
+}
+
+// Sentido: asc = de menor a mayor, desc = de mayor a menor
+$dir = "desc";
+if (isset($_GET["dir"]) && in_array($_GET["dir"], ["asc", "desc"])) {
+    $dir = $_GET["dir"];
 }
 
 // ---------- 2) Contar para las pestañas (siempre sobre todos los trabajos) ----------
@@ -104,25 +144,22 @@ foreach ($trabajos as $t) {
 // ---------- Ordenar la lista ----------
 // usort ordena usando una función que compara de a dos trabajos ($a y $b).
 // El operador <=> devuelve -1, 0 o 1 según el primer valor sea menor, igual o mayor que el segundo.
-// strcmp / strcasecmp comparan textos (strcasecmp no distingue mayúsculas).
-if ($orden == "fecha_desc") {
-    usort($lista, function ($a, $b) { return strcmp($b["fecha"], $a["fecha"]); });
-}
-if ($orden == "fecha_asc") {
-    usort($lista, function ($a, $b) { return strcmp($a["fecha"], $b["fecha"]); });
-}
-if ($orden == "total_desc") {
-    usort($lista, function ($a, $b) { return total_trabajo($b) <=> total_trabajo($a); });
-}
-if ($orden == "total_asc") {
-    usort($lista, function ($a, $b) { return total_trabajo($a) <=> total_trabajo($b); });
-}
-if ($orden == "cliente_asc") {
-    usort($lista, function ($a, $b) { return strcasecmp($a["cliente"], $b["cliente"]); });
-}
-if ($orden == "cliente_desc") {
-    usort($lista, function ($a, $b) { return strcasecmp($b["cliente"], $a["cliente"]); });
-}
+// "use ($orden, $dir)" le presta a la función las variables de afuera (si no, no las vería).
+usort($lista, function ($a, $b) use ($orden, $dir) {
+    // Se comparan los datos de la columna elegida
+    $resultado = valor_columna($a, $orden) <=> valor_columna($b, $orden);
+
+    // Si son iguales (por ejemplo, dos trabajos del mismo cliente), desempata por ID
+    if ($resultado == 0) {
+        $resultado = $a["id"] <=> $b["id"];
+    }
+
+    // Para "de mayor a menor" se da vuelta el resultado
+    if ($dir == "desc") {
+        $resultado = -$resultado;
+    }
+    return $resultado;
+});
 
 // ---------- 4) Calcular el resumen y el total por cliente (sobre la lista filtrada) ----------
 $suma_horas = 0;
@@ -195,11 +232,11 @@ $dias_limite = 15;
       <!-- Pestañas: son enlaces. Se les agrega la búsqueda para que no se pierda al cambiar de pestaña.
            urlencode prepara el texto para ir dentro de una URL. -->
       <nav class="pestanas">
-        <a href="trabajos.php?estado=todos&buscar=<?php echo urlencode($buscar); ?>&orden=<?php echo $orden; ?>"
+        <a href="trabajos.php?estado=todos&buscar=<?php echo urlencode($buscar); ?>&orden=<?php echo $orden; ?>&dir=<?php echo $dir; ?>"
            class="<?php if ($estado == 'todos') { echo 'activa'; } ?>">Todos (<?php echo $cant_todos; ?>)</a>
-        <a href="trabajos.php?estado=curso&buscar=<?php echo urlencode($buscar); ?>&orden=<?php echo $orden; ?>"
+        <a href="trabajos.php?estado=curso&buscar=<?php echo urlencode($buscar); ?>&orden=<?php echo $orden; ?>&dir=<?php echo $dir; ?>"
            class="<?php if ($estado == 'curso') { echo 'activa'; } ?>">En curso (<?php echo $cant_curso; ?>)</a>
-        <a href="trabajos.php?estado=terminados&buscar=<?php echo urlencode($buscar); ?>&orden=<?php echo $orden; ?>"
+        <a href="trabajos.php?estado=terminados&buscar=<?php echo urlencode($buscar); ?>&orden=<?php echo $orden; ?>&dir=<?php echo $dir; ?>"
            class="<?php if ($estado == 'terminados') { echo 'activa'; } ?>">Terminados (<?php echo $cant_terminados; ?>)</a>
       </nav>
 
@@ -209,12 +246,9 @@ $dias_limite = 15;
         <input type="hidden" name="estado" value="<?php echo $estado; ?>" />
         <label for="buscar">Buscar cliente</label>
         <input type="text" name="buscar" id="buscar" value="<?php echo htmlspecialchars($buscar); ?>" />
-        <label for="orden">Ordenar por</label>
-        <select name="orden" id="orden">
-          <?php foreach ($ordenes as $clave => $texto) { ?>
-            <option value="<?php echo $clave; ?>" <?php if ($orden == $clave) { echo "selected"; } ?>><?php echo $texto; ?></option>
-          <?php } ?>
-        </select>
+        <!-- Campos ocultos: mantienen el orden elegido en los encabezados al buscar -->
+        <input type="hidden" name="orden" value="<?php echo $orden; ?>" />
+        <input type="hidden" name="dir" value="<?php echo $dir; ?>" />
         <button type="submit" class="boton">Aplicar</button>
         <a href="trabajos.php" class="boton boton-sec">Limpiar</a>
       </form>
@@ -235,14 +269,31 @@ $dias_limite = 15;
         <div class="tabla-contenedor">
           <table class="tabla">
             <tr>
-              <th>ID</th>
-              <th>Fecha</th>
-              <th>Cliente</th>
-              <th>Trabajo</th>
-              <th>Horas</th>
-              <th>Total</th>
-              <th>Estado</th>
-              <th>Cobro</th>
+              <!-- Un encabezado por cada columna de $columnas. Cada uno es un enlace que ordena por esa columna. -->
+              <?php foreach ($columnas as $clave => $titulo) { ?>
+                <?php
+                  // Sentido al tocar: si la columna ya está de menor a mayor, pasa a mayor a menor;
+                  // en cualquier otro caso empieza de menor a mayor.
+                  $nuevo_dir = "asc";
+                  if ($orden == $clave && $dir == "asc") {
+                      $nuevo_dir = "desc";
+                  }
+
+                  // Flecha solo en la columna activa: ▲ menor a mayor, ▼ mayor a menor
+                  $flecha = "";
+                  if ($orden == $clave && $dir == "asc") {
+                      $flecha = " ▲";
+                  }
+                  if ($orden == $clave && $dir == "desc") {
+                      $flecha = " ▼";
+                  }
+                ?>
+                <th>
+                  <!-- El enlace conserva la pestaña y la búsqueda (estado y buscar) -->
+                  <a class="orden-link <?php if ($orden == $clave) { echo 'activa'; } ?>"
+                     href="trabajos.php?estado=<?php echo $estado; ?>&buscar=<?php echo urlencode($buscar); ?>&orden=<?php echo $clave; ?>&dir=<?php echo $nuevo_dir; ?>"><?php echo $titulo . $flecha; ?></a>
+                </th>
+              <?php } ?>
               <th>Acciones</th>
             </tr>
             <?php foreach ($lista as $t) { ?>

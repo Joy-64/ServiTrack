@@ -1,13 +1,19 @@
 /* formularios.css
-   Estilos de los dos formularios (CargaDeClientes.html y CargaDeTrabajo.html).
+   Estilos de los formularios (CargaDeClientes, CargaDeTrabajo, modificar_trabajo)
+   y de las pantallas de resumen y de errores.
    Va DESPUÉS de style.css porque usa sus variables de color (var(--...)).
-   Conceptos: selectores de clase, modelo de caja, Flexbox, media query. */
+   Conceptos: selectores de clase, modelo de caja, Flexbox, flex-wrap, clamp().
 
-/* Contenedor central del formulario */
+   CAMBIOS DE ESTA VERSIÓN (para que se adapte al tamaño de pantalla):
+   - Los campos de una misma fila bajan solos de renglón (flex-wrap), sin @media.
+   - Márgenes y rellenos con clamp(): se achican en celular y crecen en pantallas grandes. */
+
+
+/* ---------- Contenedor central del formulario ---------- */
 .formulario {
-    max-width: 800px;
-    margin: 2rem auto;
-    padding: 0 1rem;
+    max-width: 900px;                               /* un formulario muy ancho se lee mal, por eso el tope */
+    margin: clamp(1rem, 3vw, 2rem) auto;            /* clamp(mín, ideal, máx): margen que se adapta */
+    padding: 0 clamp(.75rem, 3vw, 1rem);
     font-family: var(--texto);
 }
 
@@ -17,13 +23,15 @@
     margin-bottom: 1rem;
 }
 
-/* Cada sección del formulario */
+
+/* ---------- Cada sección del formulario ---------- */
 fieldset {
     background-color: var(--blanco-suave);
     border: 1px solid var(--gris-oscuro);
     border-radius: 10px;
-    padding: 1rem;
+    padding: clamp(.75rem, 2vw, 1rem);      /* menos relleno en celular */
     margin-bottom: 1rem;
+    min-width: 0;                           /* permite que el fieldset se achique y no se salga de la pantalla */
 }
 
 legend {
@@ -32,7 +40,8 @@ legend {
     padding: 0 .5rem;
 }
 
-/* Un campo: la etiqueta arriba y el control abajo */
+
+/* ---------- Un campo: la etiqueta arriba y el control abajo ---------- */
 .campo {
     display: flex;
     flex-direction: column;
@@ -44,17 +53,22 @@ legend {
     margin-bottom: .25rem;
 }
 
-/* Varios campos en la misma línea */
+
+/* ---------- Varios campos en la misma línea ---------- */
 .fila {
     display: flex;
-    gap: 1rem;
+    flex-wrap: wrap;        /* si los campos no entran en un renglón, bajan al siguiente */
+    gap: 0 1rem;
 }
 
 .fila .campo {
-    flex: 1;
+    /* flex: 1 1 180px = cada campo parte de 180px y se reparte el espacio sobrante.
+       Cuando no entran dos de 180px, uno baja. Reemplaza al @media de antes. */
+    flex: 1 1 180px;
 }
 
-/* Controles de texto, listas y áreas de texto */
+
+/* ---------- Controles de texto, listas y áreas de texto ---------- */
 input,
 select,
 textarea {
@@ -75,7 +89,7 @@ input[type="checkbox"] {
 .opciones {
     display: flex;
     flex-wrap: wrap;
-    gap: 1rem;
+    gap: .5rem 1rem;
 }
 
 .opciones label {
@@ -87,25 +101,21 @@ input[type="checkbox"] {
     display: none;
 }
 
-/* Botones */
+
+/* ---------- Botones ---------- */
 .botones {
     display: flex;
+    flex-wrap: wrap;        /* en celular los botones bajan de renglón */
     gap: 1rem;
-    margin-bottom: 2rem;
+    margin-bottom: 1.5rem;
 }
 
 .boton-sec {
     background-color: var(--gris-claro);
 }
 
-/* En pantallas chicas los campos se apilan */
-@media (max-width: 768px) {
-    .fila {
-        flex-direction: column;
-    }
-}
 
-/* ---- Pantallas de resumen y de errores (CargaDeTrabajo.php / CargaDeClientes.php) ---- */
+/* ---------- Pantallas de resumen y de errores (CargaDeTrabajo.php / CargaDeClientes.php) ---------- */
 
 /* Tabla de datos: una fila por dato */
 .resultado {
@@ -120,6 +130,7 @@ input[type="checkbox"] {
     padding: 8px;
     border-bottom: 1px solid var(--gris-claro);
     text-align: left;
+    overflow-wrap: anywhere;    /* un texto largo se parte en vez de ensanchar la tabla */
 }
 
 .resultado th {
@@ -164,7 +175,8 @@ a.boton {
 /* Atajos de navegación en el cuerpo de la página */
 .atajos {
     display: flex;
-    gap: 1.5rem;
+    flex-wrap: wrap;            /* en celular los enlaces bajan de renglón */
+    gap: .5rem 1.5rem;
     margin-bottom: 1rem;
 }
 
