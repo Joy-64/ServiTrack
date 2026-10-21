@@ -1,0 +1,88 @@
+=====================================================
+BITACORA DEL PROYECTO - SERVITRACK
+=====================================================
+Cómo se usa: cuando el usuario diga "guardá", Claude agrega
+una entrada nueva al final de la sección REGISTRO DE CAMBIOS
+y actualiza ESTADO ACTUAL y PENDIENTES. Al empezar un chat
+nuevo, subir este archivo para que Claude lo lea.
+
+-----------------------------------------------------
+1. DESCRIPCION DEL PROYECTO
+-----------------------------------------------------
+Web para oficios (plomeros, electricistas, gasistas, etc.)
+donde pueden cargar clientes, armar presupuestos y
+controlar trabajos. Stack: HTML, CSS, JS (Leaflet para
+el mapa), PHP y MySQL/MariaDB.
+
+-----------------------------------------------------
+2. ARCHIVOS DEL PROYECTO
+-----------------------------------------------------
+- inicio.html          Landing con header, mapa Leaflet (demo)
+                       y footer. <main> con placeholder.
+- inicio copy.html     Variante de la landing: 3 imágenes-enlace
+                       en lugar del mapa (versión más nueva).
+- CargaDeTrabajo.html  Formulario para cargar un trabajo.
+                       Header y footer vacíos.
+- CargaDeTrabajo.php   Casi vacío: solo $servername y $username.
+- servitrack.sql       Base de datos (ver sección 3).
+- style.css            Estilos de header, footer, botones,
+                       responsive. Sin estilos de formulario.
+- Faltan (no subidos): js/mapa.js, js/script.js, carpeta img/ y font/
+
+-----------------------------------------------------
+3. BASE DE DATOS (servitrack)
+-----------------------------------------------------
+- carga_datos_personales (id, nombre, apellido, cuit, telefono,
+  ciudad, calle, numero_calle)
+- clientes (id, id_persona FK, nombre, telefono, mail, direccion)
+- oficios (id, `nombre_del oficio`)  -> 8 oficios cargados
+- persona_oficio (id, id_persona FK, id_oficio FK)
+- trabajos (id, id_cliente FK, fecha, presupuesto, descripcion,
+  horas, estado)
+- contactanos (nombre, correo_electronico, telefono, mensaje)
+
+-----------------------------------------------------
+4. ESTADO ACTUAL
+-----------------------------------------------------
+- Estructura visual base lista (header/footer/responsive).
+- Formulario de carga de trabajo armado en HTML, sin estilos
+  y sin backend funcional.
+- PHP sin conexión a BD ni INSERT.
+
+-----------------------------------------------------
+5. PROBLEMAS DETECTADOS
+-----------------------------------------------------
+1. El formulario no coincide con la tabla trabajos (faltan
+   columnas/tablas para ubicación, tipo de trabajo, desde/hasta
+   y comprobantes).
+2. Checkboxes con el mismo name="TipoDeTrabajo": usar
+   name="TipoDeTrabajo[]" con value (o leer de tabla oficios).
+3. Inputs file con mismo id/name: usar name="Comprobante[]"
+   y multiple.
+4. <input type="datetime"> obsoleto y sin name; horas en la BD
+   es numérico -> type="number".
+5. Autocompletar Cliente <-> ID (requiere JS + endpoint PHP).
+6. Detalles: rutas /img/... absolutas en inicio copy.html,
+   lang="en" en vez de "es", "@año" sin resolver, enlaces del
+   footer a páginas inexistentes, tabla oficios con columna
+   `nombre_del oficio` (tiene espacio).
+
+-----------------------------------------------------
+6. PENDIENTES
+-----------------------------------------------------
+[ ] Completar CargaDeTrabajo.php (conexión, consultas
+    preparadas, subida de comprobantes)
+[ ] Ajustar la BD (ubicación, fechas, comprobantes,
+    relación trabajo-oficio)
+[ ] Estilar el formulario en style.css
+[ ] Autocompletado Cliente/ID
+[ ] Corregir detalles de las landings
+
+-----------------------------------------------------
+7. REGISTRO DE CAMBIOS
+-----------------------------------------------------
+[2026-10-21] Entrada inicial
+- Se revisaron todos los archivos del proyecto y se armó
+  el diagnóstico de arriba.
+- No se modificó ningún archivo del proyecto todavía.
+

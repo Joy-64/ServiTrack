@@ -1,0 +1,218 @@
+/* trabajos.css
+   Estilos de trabajos.php: pestañas, buscador, resumen, tabla y etiquetas.
+   Va DESPUÉS de style.css porque usa sus variables de color.
+   Conceptos: Flexbox, tablas, clases para estados, media query. */
+
+.pagina-trabajos {
+    max-width: 1000px;
+    margin: 2rem auto;
+    padding: 0 1rem;
+    font-family: var(--texto);
+}
+
+.pagina-trabajos h1 {
+    font-family: var(--titulos);
+    color: var(--azul-oscuro);
+    margin-bottom: 1rem;
+}
+
+.pagina-trabajos h2 {
+    font-family: var(--subtitulo);
+    color: var(--azul-oscuro);
+    font-size: 1.15rem;
+    margin-bottom: .75rem;
+}
+
+/* Pestañas: enlaces en fila; la activa se pinta de azul oscuro */
+.pestanas {
+    display: flex;
+    gap: .5rem;
+    margin-bottom: 1rem;
+    flex-wrap: wrap;
+}
+
+.pestanas a {
+    padding: 8px 16px;
+    border-radius: 8px;
+    background-color: var(--blanco-suave);
+    border: 1px solid var(--gris-oscuro);
+    color: var(--negro-suave);
+}
+
+.pestanas a.activa {
+    background-color: var(--azul-oscuro);
+    color: var(--blanco-suave);
+}
+
+/* Buscador */
+.buscador {
+    display: flex;
+    gap: .5rem;
+    align-items: center;
+    flex-wrap: wrap;
+    margin-bottom: 1rem;
+}
+
+.buscador input[type="text"] {
+    padding: 8px;
+    border: 1px solid var(--gris-oscuro);
+    border-radius: 6px;
+}
+
+.buscador a.boton {
+    color: var(--negro-suave);
+}
+
+.boton-sec {
+    background-color: var(--gris-claro);
+}
+
+/* Resumen: cajas en fila */
+.resumen-lista {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+    flex-wrap: wrap;
+}
+
+.dato {
+    flex: 1;
+    min-width: 150px;
+    background-color: var(--azul-oscuro);
+    color: var(--blanco-suave);
+    border-radius: 10px;
+    padding: 1rem;
+}
+
+.dato strong {
+    display: block;
+    font-family: var(--titulos);
+    font-size: 1.4rem;
+}
+
+/* El pendiente de cobro se destaca en violeta */
+.dato-cobro {
+    background-color: var(--violeta);
+}
+
+/* Tabla: si la pantalla es angosta, se desplaza dentro de su caja */
+.tabla-contenedor {
+    overflow-x: auto;
+    margin-bottom: 1.5rem;
+}
+
+.tabla {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: var(--blanco-suave);
+}
+
+.tabla th,
+.tabla td {
+    padding: 10px;
+    text-align: left;
+    border-bottom: 1px solid var(--gris-claro);
+}
+
+.tabla th {
+    background-color: var(--azul-oscuro);
+    color: var(--blanco-suave);
+    font-family: var(--subtitulo);
+}
+
+/* Trabajo atrasado: toda la fila con fondo rojizo */
+.fila-atrasada {
+    background-color: #fdecec;
+}
+
+/* Etiquetas de estado y de cobro */
+.etiqueta {
+    display: inline-block;
+    border-radius: 999px;
+    padding: 2px 10px;
+    white-space: nowrap;
+}
+
+.etiqueta-verde   { background-color: var(--verde);   color: var(--negro-suave); }
+.etiqueta-violeta { background-color: var(--violeta); color: var(--blanco-suave); }
+.etiqueta-roja    { background-color: #b91c1c;        color: var(--blanco-suave); }
+.etiqueta-naranja { background-color: #f59e0b;        color: var(--negro-suave); }
+
+/* Total por cliente */
+.por-cliente {
+    background-color: var(--blanco-suave);
+    border-radius: 10px;
+    padding: 1rem;
+    margin-bottom: 2rem;
+}
+
+.por-cliente li {
+    display: flex;
+    justify-content: space-between;
+    padding: .5rem 0;
+    border-bottom: 1px solid var(--gris-claro);
+}
+
+.vacio {
+    color: var(--gris-oscuro);
+    margin-bottom: 2rem;
+}
+
+/* En pantallas chicas el resumen se apila */
+@media (max-width: 768px) {
+    .resumen-lista {
+        flex-direction: column;
+    }
+}
+
+/* Atajos de navegación en el cuerpo de la página */
+.atajos {
+    display: flex;
+    gap: 1.5rem;
+    margin-bottom: 1rem;
+}
+
+.atajos a {
+    color: var(--azul-intermedio);
+    text-decoration: underline;
+}
+
+/* Mensaje de aviso (por ejemplo: "Trabajo modificado") */
+.aviso {
+    background-color: var(--blanco-suave);
+    border-left: 5px solid var(--verde);
+    padding: .75rem 1rem;
+    margin-bottom: 1rem;
+}
+
+/* Selector de orden */
+.buscador select {
+    padding: 8px;
+    border: 1px solid var(--gris-oscuro);
+    border-radius: 6px;
+}
+
+/* Botones chicos de la columna Acciones */
+.acciones-celda {
+    min-width: 170px;
+}
+
+.acciones-celda form {
+    margin-top: .4rem;
+}
+
+.btn-mini {
+    display: inline-block;
+    padding: 4px 10px;
+    border: 1px solid var(--azul-oscuro);
+    border-radius: 6px;
+    background-color: var(--azul-claro);
+    color: var(--negro-suave);
+    font-family: var(--texto);
+    font-size: .9rem;
+    cursor: pointer;
+}
+
+.btn-mini:hover {
+    background-color: var(--verde);
+}

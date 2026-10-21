@@ -1,10 +1,9 @@
 <!doctype html>
 <!--
   CargaDeTrabajo.html
-  Formulario para registrar un trabajo realizado: cliente, tipo de trabajo,
-  fechas y horas, presupuesto y comprobantes.
-  Los datos se envían a CargaDeTrabajo.php (método POST).
-  Estilos: css/style.css (generales) + css/carga-trabajo.css (de este formulario).
+  Formulario para registrar un trabajo realizado.
+  Sin JavaScript: al apretar el botón los datos se envían por POST a CargaDeTrabajo.php,
+  que valida, calcula la mano de obra y el total, y muestra un resumen.
 -->
 <html lang="es">
   <head>
@@ -13,11 +12,10 @@
     <title>Cargar trabajo | ServiTrack</title>
     <link rel="icon" href="./img/logo3.0.jpeg" />
     <link rel="stylesheet" href="css/style.css" />
-    <!-- Estilos nuevos de este formulario (pegalos al final de style.css y borrá esta línea) -->
-    <link rel="stylesheet" href="css/carga-trabajo.css" />
+    <link rel="stylesheet" href="css/formularios.css" />
   </head>
   <body>
-    <!--Header (igual al de inicio.html)-->
+    <!-- Cabecera: logo y menú, igual en todas las páginas -->
     <header>
       <div class="header-logo">
         <a href="inicio.html">
@@ -36,53 +34,54 @@
       <div class="header-boton"><button class="boton"><a class="login" href="">Acceso</a></button></div>
     </header>
 
-    <!--Cuerpo-->
-    <main class="carga-main">
-      <h1 class="carga-titulo">Cargar trabajo</h1>
-      <p class="carga-ayuda">Los campos con * son obligatorios.</p>
+    <main class="formulario">
+      <!-- Atajos siempre visibles (el menú de arriba se esconde en pantallas angostas) -->
+      <p class="atajos"><a href="panel.php">← Panel</a> <a href="trabajos.php">Ver todos los trabajos</a></p>
+      <h1>Cargar trabajo</h1>
 
-      <form action="CargaDeTrabajo.php" method="post" enctype="multipart/form-data" class="carga-form">
+      <!-- enctype="multipart/form-data" es obligatorio cuando el formulario sube archivos -->
+      <form action="CargaDeTrabajo.php" method="post" enctype="multipart/form-data">
 
-        <!-- 1. Cliente: se puede buscar por ID o por nombre; el JS de abajo completa el otro campo -->
+        <!-- Sección 1: cliente y trabajo -->
         <fieldset>
-          <legend>Cliente</legend>
-          <div class="campo campo-id">
-            <label for="IdCliente">ID</label>
-            <input type="number" name="IdCliente" id="IdCliente" min="1" />
-          </div>
+          <legend>Cliente y trabajo</legend>
+
           <div class="campo">
-            <label for="Cliente">Nombre del cliente *</label>
-            <input type="text" name="Cliente" id="Cliente" list="lista-clientes" autocomplete="off" required />
-            <datalist id="lista-clientes"></datalist>
-            <small id="estado-cliente" aria-live="polite"></small>
+            <label for="IdCliente">Cliente *</label>
+            <!-- El value de cada opción es el id del cliente (lo que se guarda en la base).
+                 Estas opciones son de ejemplo; después las genera PHP desde la tabla clientes. -->
+            <select name="IdCliente" id="IdCliente" required>
+              <option value="">Elegí un cliente</option>
+              <option value="1">Marta Gómez</option>
+              <option value="2">Pedro Díaz</option>
+              <option value="3">Lucía Fernández</option>
+              <option value="4">Carlos Ruiz</option>
+              <option value="5">Ana Sosa</option>
+            </select>
           </div>
+
           <div class="campo">
             <label for="Ubicacion">Ubicación</label>
             <input type="text" name="Ubicacion" id="Ubicacion" placeholder="Calle, número, ciudad" />
           </div>
-        </fieldset>
 
-        <!-- 2. Trabajo: qué se hizo, tipo de oficio (se guarda el id de la tabla oficios) y estado -->
-        <fieldset>
-          <legend>Trabajo</legend>
           <div class="campo">
             <label for="TrabajoRealizado">Trabajo realizado *</label>
-            <textarea name="TrabajoRealizado" id="TrabajoRealizado" rows="3" placeholder="Describí qué se hizo" required></textarea>
+            <textarea name="TrabajoRealizado" id="TrabajoRealizado" rows="3" required></textarea>
           </div>
 
           <div class="campo">
-            <span class="etiqueta">Tipo de trabajo *</span>
-            <div class="checkbox-group">
+            <label>Tipo de trabajo *</label>
+            <!-- name con [] : PHP recibe una lista con todos los tipos marcados.
+                 El value es el id del oficio en la tabla oficios. -->
+            <div class="opciones">
               <label><input type="checkbox" name="TipoDeTrabajo[]" value="2" /> Plomería</label>
               <label><input type="checkbox" name="TipoDeTrabajo[]" value="8" /> Gas</label>
               <label><input type="checkbox" name="TipoDeTrabajo[]" value="1" /> Electricidad</label>
               <label><input type="checkbox" name="TipoDeTrabajo[]" value="3" /> Albañilería</label>
               <label><input type="checkbox" name="TipoDeTrabajo[]" value="5" /> Pintura</label>
               <label><input type="checkbox" name="TipoDeTrabajo[]" value="4" /> Carpintería</label>
-              <label><input type="checkbox" name="TipoDeTrabajo[]" value="6" /> Cerrajería</label>
-              <label><input type="checkbox" name="TipoDeTrabajo[]" value="7" /> Herrería</label>
             </div>
-            <small id="error-tipo" class="error" hidden>Elegí al menos un tipo de trabajo.</small>
           </div>
 
           <div class="campo">
@@ -94,7 +93,7 @@
           </div>
         </fieldset>
 
-        <!-- 3. Fechas y horas: "Hasta" no puede ser anterior a "Desde" (lo controla el JS) -->
+        <!-- Sección 2: fechas y horas -->
         <fieldset>
           <legend>Fechas y horas</legend>
           <div class="fila">
@@ -107,54 +106,54 @@
               <input type="date" name="Hasta" id="Hasta" />
             </div>
             <div class="campo">
-              <label for="HorasTrabajadas">Horas trabajadas</label>
-              <input type="number" name="HorasTrabajadas" id="HorasTrabajadas" min="0" step="0.25" placeholder="Ej: 6.5" />
+              <label for="Horas">Horas trabajadas</label>
+              <!-- step="0.5" permite medias horas -->
+              <input type="number" name="Horas" id="Horas" min="0" step="0.5" />
             </div>
           </div>
         </fieldset>
 
-        <!-- 4. Presupuesto: detalle libre + importes; el Total se calcula solo (campo de solo lectura) -->
+        <!-- Sección 3: presupuesto -->
         <fieldset>
-          <legend>Presupuesto y materiales</legend>
+          <legend>Presupuesto</legend>
           <div class="campo">
-            <label for="Presupuesto">Detalle de materiales y precios</label>
-            <textarea name="Presupuesto" id="Presupuesto" rows="5" placeholder="Materiales usados, precios, etc."></textarea>
+            <label for="Presupuesto">Detalle de materiales y trabajo</label>
+            <textarea name="Presupuesto" id="Presupuesto" rows="4" placeholder="Materiales usados, precios, etc."></textarea>
           </div>
+          <!-- Estos dos los escribe la persona. La mano de obra (horas × precio) y el total
+               NO están acá: los calcula PHP cuando se envía el formulario -->
           <div class="fila">
             <div class="campo">
-              <label for="ManoDeObra">Mano de obra ($)</label>
-              <input type="number" name="ManoDeObra" id="ManoDeObra" min="0" step="0.01" />
+              <label for="PrecioHora">Precio por hora ($)</label>
+              <input type="number" name="PrecioHora" id="PrecioHora" min="0" step="0.01" />
             </div>
             <div class="campo">
               <label for="Materiales">Materiales ($)</label>
               <input type="number" name="Materiales" id="Materiales" min="0" step="0.01" />
             </div>
-            <div class="campo">
-              <label for="Total">Total ($)</label>
-              <input type="text" id="Total" value="$ 0,00" readonly />
-            </div>
           </div>
+          <p>La mano de obra (horas × precio por hora) y el total se calculan al enviar.</p>
         </fieldset>
 
-        <!-- 5. Comprobantes: hasta 4 archivos (imágenes o PDF) en un solo campo múltiple -->
+        <!-- Sección 4: comprobantes -->
         <fieldset>
           <legend>Comprobantes</legend>
           <div class="campo">
-            <label for="Comprobante">Fotos o PDF (hasta 4 archivos)</label>
+            <label for="Comprobante">Fotos o PDF</label>
+            <!-- multiple: permite elegir varios archivos. Comprobante[] llega a PHP como lista -->
             <input type="file" name="Comprobante[]" id="Comprobante" accept="image/*,.pdf" multiple />
-            <ul id="lista-archivos" class="lista-archivos"></ul>
           </div>
         </fieldset>
 
-        <!-- Botones: Guardar envía el formulario, Limpiar lo vacía -->
-        <div class="acciones">
-          <button type="submit" class="boton">Guardar trabajo</button>
+        <div class="botones">
+          <!-- Cuando se conecte la base, este botón pasa a decir "Guardar trabajo" -->
+          <button type="submit" class="boton">Calcular y revisar</button>
           <button type="reset" class="boton boton-sec">Limpiar</button>
         </div>
       </form>
     </main>
 
-    <!--footer (igual al de inicio.html)-->
+    <!-- Pie de página, igual en todas las páginas -->
     <footer class="footer">
       <div class="footer-logo">
         <a href="inicio.html">
@@ -167,102 +166,8 @@
         <a href="quienes-somos.html">Quienes somos</a>
         <a href="contacto.html">Contacto</a>
       </nav>
-      <p class="derechos">&copy; <span id="anio"></span> | ServiTrack. Todos los derechos reservados.</p>
+      <p class="derechos">&copy; 2026 | ServiTrack. Todos los derechos reservados.</p>
     </footer>
 
-    <script>
-      // ---- Comportamiento del formulario ----
-
-      // Año del footer
-      document.getElementById("anio").textContent = new Date().getFullYear();
-
-      // "Hasta" no puede ser anterior a "Desde"
-      const desde = document.getElementById("Desde");
-      const hasta = document.getElementById("Hasta");
-      desde.addEventListener("change", () => { hasta.min = desde.value; });
-
-      // Total = mano de obra + materiales
-      const mo = document.getElementById("ManoDeObra");
-      const mat = document.getElementById("Materiales");
-      const total = document.getElementById("Total");
-      function calcularTotal() {
-        const t = (parseFloat(mo.value) || 0) + (parseFloat(mat.value) || 0);
-        total.value = t.toLocaleString("es-AR", { style: "currency", currency: "ARS" });
-      }
-      mo.addEventListener("input", calcularTotal);
-      mat.addEventListener("input", calcularTotal);
-
-      // Validación: al menos un tipo de trabajo marcado antes de enviar
-      const form = document.querySelector(".carga-form");
-      const tipos = form.querySelectorAll('input[name="TipoDeTrabajo[]"]');
-      const errorTipo = document.getElementById("error-tipo");
-      form.addEventListener("submit", (e) => {
-        const ok = [...tipos].some((c) => c.checked);
-        errorTipo.hidden = ok;
-        if (!ok) { e.preventDefault(); tipos[0].focus(); }
-      });
-
-      // Comprobantes: permite máximo 4 archivos y muestra sus nombres
-      const archivos = document.getElementById("Comprobante");
-      const listaArchivos = document.getElementById("lista-archivos");
-      archivos.addEventListener("change", () => {
-        if (archivos.files.length > 4) {
-          alert("Podés subir hasta 4 archivos.");
-          archivos.value = "";
-        }
-        listaArchivos.innerHTML = "";
-        [...archivos.files].forEach((f) => {
-          const li = document.createElement("li");
-          li.textContent = f.name;
-          listaArchivos.appendChild(li);
-        });
-      });
-
-      // Cliente: autocompleta ID <-> nombre consultando a buscar_cliente.php
-      // (si ese archivo todavía no existe, simplemente no autocompleta)
-      const idCli = document.getElementById("IdCliente");
-      const nomCli = document.getElementById("Cliente");
-      const lista = document.getElementById("lista-clientes");
-      const estado = document.getElementById("estado-cliente");
-      let clientes = [];
-
-      async function buscar(params) {
-        try {
-          const r = await fetch("buscar_cliente.php?" + new URLSearchParams(params));
-          return r.ok ? await r.json() : [];
-        } catch { return []; }
-      }
-
-      nomCli.addEventListener("input", async () => {
-        if (nomCli.value.length < 2) return;
-        clientes = await buscar({ nombre: nomCli.value });
-        lista.innerHTML = "";
-        clientes.forEach((c) => {
-          const o = document.createElement("option");
-          o.value = c.nombre;
-          lista.appendChild(o);
-        });
-        const exacto = clientes.find((c) => c.nombre === nomCli.value);
-        if (exacto) {
-          idCli.value = exacto.id;
-          if (exacto.direccion && !document.getElementById("Ubicacion").value)
-            document.getElementById("Ubicacion").value = exacto.direccion;
-          estado.textContent = "Cliente encontrado";
-        } else {
-          estado.textContent = "";
-        }
-      });
-
-      idCli.addEventListener("change", async () => {
-        if (!idCli.value) return;
-        const res = await buscar({ id: idCli.value });
-        if (res.length) {
-          nomCli.value = res[0].nombre;
-          estado.textContent = "Cliente encontrado";
-        } else {
-          estado.textContent = "No existe un cliente con ese ID";
-        }
-      });
-    </script>
   </body>
 </html>

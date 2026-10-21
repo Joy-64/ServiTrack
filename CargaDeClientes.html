@@ -1,12 +1,9 @@
 <!doctype html>
 <!--
   CargaDeClientes.html
-  Formulario para registrar un cliente: datos principales, contacto, varias
-  direcciones, facturación (opcional) y observaciones.
-  Se envía a CargaDeClientes.php (método POST). Ese archivo todavía no existe:
-  por ahora el formulario sirve para ver y probar el diseño.
-  Estilos: style.css (generales) + carga-trabajo.css (base de formularios)
-  + carga-clientes.css (extras de este formulario).
+  Formulario para registrar un cliente.
+  Sin JavaScript: al apretar el botón los datos se envían por POST a CargaDeClientes.php,
+  que los valida y muestra un resumen.
 -->
 <html lang="es">
   <head>
@@ -15,11 +12,10 @@
     <title>Cargar cliente | ServiTrack</title>
     <link rel="icon" href="./img/logo3.0.jpeg" />
     <link rel="stylesheet" href="css/style.css" />
-    <link rel="stylesheet" href="css/carga-trabajo.css" />
-    <link rel="stylesheet" href="css/carga-clientes.css" />
+    <link rel="stylesheet" href="css/formularios.css" />
   </head>
   <body>
-    <!-- Cabecera con logo y menú (igual a las demás páginas) -->
+    <!-- Cabecera: logo y menú, igual en todas las páginas -->
     <header>
       <div class="header-logo">
         <a href="inicio.html">
@@ -38,181 +34,100 @@
       <div class="header-boton"><button class="boton"><a class="login" href="">Acceso</a></button></div>
     </header>
 
-    <main class="carga-main">
-      <h1 class="carga-titulo">Cargar cliente</h1>
-      <p class="carga-ayuda">Los campos con * son obligatorios. Si estás en obra, alcanza con nombre, teléfono y dirección.</p>
+    <main class="formulario">
+      <!-- Atajos siempre visibles (el menú de arriba se esconde en pantallas angostas) -->
+      <p class="atajos"><a href="panel.php">← Panel</a> <a href="trabajos.php">Ver todos los trabajos</a></p>
+      <h1>Cargar cliente</h1>
 
-      <form action="CargaDeClientes.php" method="post" class="carga-form" id="form-cliente">
+      <!-- action = a dónde se envían los datos. method="post" = viajan ocultos, no en la URL.
+           Cada campo con "name" llega a PHP como $_POST["name"] -->
+      <form action="CargaDeClientes.php" method="post">
 
-        <!-- 1. Datos principales. Razón social y contacto solo se ven si no es "Particular" -->
+        <!-- Sección 1: datos principales -->
         <fieldset>
           <legend>Datos principales</legend>
+
           <div class="campo">
             <label for="Nombre">Nombre *</label>
+            <!-- required: el navegador no deja enviar si está vacío -->
             <input type="text" name="Nombre" id="Nombre" maxlength="50" required />
           </div>
+
           <div class="campo">
-            <span class="etiqueta">Tipo de cliente</span>
-            <div class="checkbox-group">
-              <label><input type="radio" name="Tipo" value="particular" checked /> Particular</label>
-              <label><input type="radio" name="Tipo" value="empresa" /> Empresa</label>
-              <label><input type="radio" name="Tipo" value="consorcio" /> Consorcio</label>
-            </div>
+            <label for="Tipo">Tipo de cliente</label>
+            <select name="Tipo" id="Tipo">
+              <option value="particular">Particular</option>
+              <option value="empresa">Empresa</option>
+              <option value="consorcio">Consorcio</option>
+            </select>
           </div>
-          <div class="fila solo-empresa" hidden>
-            <div class="campo">
-              <label for="RazonSocial">Razón social</label>
-              <input type="text" name="RazonSocial" id="RazonSocial" maxlength="100" disabled />
-            </div>
-            <div class="campo">
-              <label for="Contacto">Persona de contacto</label>
-              <input type="text" name="Contacto" id="Contacto" maxlength="80" disabled />
-            </div>
+
+          <!-- Se completa solo si el tipo es empresa o consorcio -->
+          <div class="campo">
+            <label for="RazonSocial">Razón social (solo empresa o consorcio)</label>
+            <input type="text" name="RazonSocial" id="RazonSocial" maxlength="100" />
           </div>
         </fieldset>
 
-        <!-- 2. Contacto: el WhatsApp puede copiarse del teléfono -->
+        <!-- Sección 2: contacto -->
         <fieldset>
           <legend>Contacto</legend>
+
           <div class="fila">
             <div class="campo">
               <label for="Telefono">Teléfono</label>
-              <input type="tel" name="Telefono" id="Telefono" maxlength="20" pattern="[0-9+\-() ]{6,20}" title="Solo números, espacios, guiones, paréntesis o +" placeholder="Ej: 341 555-1234" />
+              <input type="tel" name="Telefono" id="Telefono" maxlength="20" />
             </div>
             <div class="campo">
-              <label for="Whatsapp">WhatsApp</label>
-              <input type="tel" name="Whatsapp" id="Whatsapp" maxlength="20" pattern="[0-9+\-() ]{6,20}" title="Solo números, espacios, guiones, paréntesis o +" />
+              <label for="Whatsapp">WhatsApp (si queda vacío se usa el teléfono)</label>
+              <input type="tel" name="Whatsapp" id="Whatsapp" maxlength="20" />
             </div>
           </div>
-          <label class="casilla">
-            <input type="checkbox" id="MismoNumero" /> El WhatsApp es el mismo número
-          </label>
+
           <div class="campo">
             <label for="Mail">Mail</label>
+            <!-- type="email": el navegador revisa que tenga formato de mail -->
             <input type="email" name="Mail" id="Mail" maxlength="100" />
           </div>
+        </fieldset>
+
+        <!-- Sección 3: dirección (una sola) -->
+        <fieldset>
+          <legend>Dirección</legend>
           <div class="fila">
             <div class="campo">
-              <label for="Horario">Horario preferido</label>
-              <select name="Horario" id="Horario">
-                <option value="cualquiera">Cualquier hora</option>
-                <option value="manana">Mañana</option>
-                <option value="tarde">Tarde</option>
-              </select>
+              <label for="Direccion">Calle y número *</label>
+              <input type="text" name="Direccion" id="Direccion" maxlength="100" required />
             </div>
             <div class="campo">
-              <label for="Origen">Cómo llegó</label>
-              <select name="Origen" id="Origen">
-                <option value="">Sin especificar</option>
-                <option value="referido">Referido</option>
-                <option value="redes">Redes sociales</option>
-                <option value="cartel">Cartel o vehículo</option>
-                <option value="otro">Otro</option>
-              </select>
+              <label for="Ciudad">Ciudad *</label>
+              <input type="text" name="Ciudad" id="Ciudad" maxlength="60" required />
             </div>
           </div>
         </fieldset>
 
-        <!-- 3. Direcciones: se pueden agregar varias; una sola es la principal -->
-        <fieldset>
-          <legend>Direcciones</legend>
-          <div id="direcciones"></div>
-          <button type="button" class="boton boton-sec" id="agregar-direccion">+ Agregar otra dirección</button>
-        </fieldset>
-
-        <!-- 4. Facturación: plegada por defecto, para quien no factura -->
-        <details class="plegable">
-          <summary>Facturación (opcional)</summary>
-          <div class="plegable-cuerpo">
-            <div class="fila">
-              <div class="campo">
-                <label for="Documento">DNI o CUIT</label>
-                <input type="text" name="Documento" id="Documento" maxlength="13" inputmode="numeric" placeholder="Solo números" />
-                <small id="error-doc" class="error" hidden>Revisá el número: un DNI tiene 7 u 8 dígitos y un CUIT 11 (válidos).</small>
-              </div>
-              <div class="campo">
-                <label for="CondicionIva">Condición frente al IVA</label>
-                <select name="CondicionIva" id="CondicionIva">
-                  <option value="">Sin especificar</option>
-                  <option>Consumidor final</option>
-                  <option>Monotributista</option>
-                  <option>Responsable inscripto</option>
-                  <option>Exento</option>
-                </select>
-              </div>
-            </div>
-          </div>
-        </details>
-
-        <!-- 5. Otros -->
+        <!-- Sección 4: otros datos -->
         <fieldset>
           <legend>Otros</legend>
           <div class="campo">
             <label for="Observaciones">Observaciones</label>
-            <textarea name="Observaciones" id="Observaciones" rows="3" placeholder="Ej: tocar timbre del fondo, tiene perro, solo mañanas"></textarea>
+            <textarea name="Observaciones" id="Observaciones" rows="3" placeholder="Ej: tocar timbre del fondo"></textarea>
           </div>
-          <label class="casilla">
-            <input type="checkbox" name="Activo" value="1" checked /> Cliente activo
-          </label>
+          <div class="campo">
+            <!-- checked: viene marcada. Si se marca, PHP recibe Activo = 1 -->
+            <label><input type="checkbox" name="Activo" value="1" checked /> Cliente activo</label>
+          </div>
         </fieldset>
 
-        <div class="acciones">
-          <button type="submit" class="boton">Guardar cliente</button>
+        <div class="botones">
+          <!-- Cuando se conecte la base, este botón pasa a decir "Guardar cliente" -->
+          <button type="submit" class="boton">Revisar cliente</button>
           <button type="reset" class="boton boton-sec">Limpiar</button>
         </div>
       </form>
     </main>
 
-    <!-- Plantilla de una dirección: el JS la copia cada vez que se agrega una -->
-    <template id="plantilla-direccion">
-      <div class="direccion">
-        <div class="direccion-cab">
-          <b class="direccion-titulo"></b>
-          <label class="casilla">
-            <input type="radio" name="DireccionPrincipal" /> Principal
-          </label>
-          <button type="button" class="quitar" hidden>Quitar</button>
-        </div>
-        <div class="fila">
-          <div class="campo">
-            <label>Etiqueta</label>
-            <select data-campo="etiqueta">
-              <option>Casa</option>
-              <option>Local</option>
-              <option>Obra</option>
-              <option>Otra</option>
-            </select>
-          </div>
-          <div class="campo campo-ancho">
-            <label>Calle y número *</label>
-            <input type="text" data-campo="calle_numero" maxlength="100" required />
-          </div>
-        </div>
-        <div class="fila">
-          <div class="campo">
-            <label>Piso / Depto</label>
-            <input type="text" data-campo="piso_depto" maxlength="20" />
-          </div>
-          <div class="campo">
-            <label>Barrio</label>
-            <input type="text" data-campo="barrio" maxlength="60" />
-          </div>
-          <div class="campo">
-            <label>Ciudad *</label>
-            <input type="text" data-campo="ciudad" maxlength="60" required />
-          </div>
-        </div>
-        <div class="campo">
-          <label>Referencias para llegar</label>
-          <input type="text" data-campo="referencias" maxlength="200" />
-        </div>
-        <!-- Se completan al guardar (CargaDeClientes.php), no los escribe la persona -->
-        <input type="hidden" data-campo="latitud" />
-        <input type="hidden" data-campo="longitud" />
-      </div>
-    </template>
-
-    <!-- Pie de página (igual a las demás páginas) -->
+    <!-- Pie de página, igual en todas las páginas -->
     <footer class="footer">
       <div class="footer-logo">
         <a href="inicio.html">
@@ -225,100 +140,8 @@
         <a href="quienes-somos.html">Quienes somos</a>
         <a href="contacto.html">Contacto</a>
       </nav>
-      <p class="derechos">&copy; <span id="anio"></span> | ServiTrack. Todos los derechos reservados.</p>
+      <p class="derechos">&copy; 2026 | ServiTrack. Todos los derechos reservados.</p>
     </footer>
 
-    <script>
-      // ---- Comportamiento del formulario ----
-      document.getElementById("anio").textContent = new Date().getFullYear();
-
-      // Tipo de cliente: muestra razón social y contacto solo si no es "Particular"
-      const bloqueEmpresa = document.querySelector(".solo-empresa");
-      document.querySelectorAll('input[name="Tipo"]').forEach((r) => {
-        r.addEventListener("change", () => {
-          const empresa = r.value !== "particular";
-          bloqueEmpresa.hidden = !empresa;
-          // Los campos ocultos se desactivan para que no se envíen
-          bloqueEmpresa.querySelectorAll("input").forEach((i) => (i.disabled = !empresa));
-        });
-      });
-
-      // WhatsApp: copia el teléfono mientras la casilla esté marcada
-      const tel = document.getElementById("Telefono");
-      const wsp = document.getElementById("Whatsapp");
-      const mismo = document.getElementById("MismoNumero");
-      function sincronizarWsp() {
-        wsp.readOnly = mismo.checked;
-        if (mismo.checked) wsp.value = tel.value;
-      }
-      mismo.addEventListener("change", sincronizarWsp);
-      tel.addEventListener("input", () => { if (mismo.checked) wsp.value = tel.value; });
-
-      // Direcciones: se agregan copiando la plantilla; los nombres llevan un índice
-      // (Direcciones[0][calle_numero], Direcciones[1][calle_numero], ...)
-      const contenedor = document.getElementById("direcciones");
-      const plantilla = document.getElementById("plantilla-direccion");
-      let indice = 0;
-
-      function renumerar() {
-        contenedor.querySelectorAll(".direccion").forEach((d, n) => {
-          d.querySelector(".direccion-titulo").textContent = "Dirección " + (n + 1);
-          d.querySelector(".quitar").hidden = n === 0; // la primera no se puede quitar
-        });
-      }
-
-      function agregarDireccion() {
-        const copia = plantilla.content.firstElementChild.cloneNode(true);
-        const i = indice++;
-        copia.querySelectorAll("[data-campo]").forEach((c) => {
-          c.name = "Direcciones[" + i + "][" + c.dataset.campo + "]";
-        });
-        const principal = copia.querySelector('input[type="radio"]');
-        principal.value = i;
-        if (!contenedor.children.length) principal.checked = true; // la primera es principal
-        copia.querySelector(".quitar").addEventListener("click", () => {
-          const eraPrincipal = principal.checked;
-          copia.remove();
-          if (eraPrincipal) contenedor.querySelector('input[type="radio"]').checked = true;
-          renumerar();
-        });
-        contenedor.appendChild(copia);
-        renumerar();
-      }
-
-      document.getElementById("agregar-direccion").addEventListener("click", agregarDireccion);
-      agregarDireccion(); // arranca con una dirección
-
-      // Documento: DNI (7 u 8 dígitos) o CUIT (11 dígitos con dígito verificador)
-      const doc = document.getElementById("Documento");
-      const errorDoc = document.getElementById("error-doc");
-
-      function cuitValido(c) {
-        const pesos = [5, 4, 3, 2, 7, 6, 5, 4, 3, 2];
-        const suma = pesos.reduce((s, p, i) => s + p * Number(c[i]), 0);
-        let dv = 11 - (suma % 11);
-        if (dv === 11) dv = 0;
-        if (dv === 10) return false;
-        return dv === Number(c[10]);
-      }
-
-      function documentoValido() {
-        const solo = doc.value.replace(/\D/g, "");
-        if (!solo) return true; // es opcional
-        if (solo.length === 7 || solo.length === 8) return true;
-        return solo.length === 11 && cuitValido(solo);
-      }
-
-      doc.addEventListener("blur", () => { errorDoc.hidden = documentoValido(); });
-
-      document.getElementById("form-cliente").addEventListener("submit", (e) => {
-        if (!documentoValido()) {
-          e.preventDefault();
-          doc.closest("details").open = true; // abre la sección para mostrar el error
-          errorDoc.hidden = false;
-          doc.focus();
-        }
-      });
-    </script>
   </body>
 </html>

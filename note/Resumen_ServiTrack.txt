@@ -1,0 +1,282 @@
+=====================================================================
+SERVITRACK - RESUMEN DE LO HECHO Y DE LOS CAMBIOS
+=====================================================================
+Fecha del resumen: 21/10/2026
+Tecnologías usadas: HTML, CSS (Flexbox), PHP. Sin JavaScript en las
+páginas nuevas. Todavía SIN base de datos (se usan datos de ejemplo).
+
+
+---------------------------------------------------------------------
+1. QUÉ ES LO QUE ARMAMOS
+---------------------------------------------------------------------
+Un sistema para que un trabajador de oficios (plomero, electricista,
+etc.) registre clientes y trabajos, y vea cuáles están pendientes,
+terminados y cobrados.
+
+Páginas del sistema:
+  - panel.php            Pantalla principal (resumen y accesos)
+  - trabajos.php         Lista de todos los trabajos, con filtros
+  - CargaDeTrabajo.html  Formulario para cargar un trabajo
+  - CargaDeTrabajo.php   Recibe el formulario, valida y calcula
+  - CargaDeClientes.html Formulario para cargar un cliente
+  - CargaDeClientes.php  Recibe el formulario y valida
+
+
+---------------------------------------------------------------------
+2. LISTA DE ARCHIVOS Y DÓNDE VA CADA UNO
+---------------------------------------------------------------------
+Carpeta raíz del proyecto (C:\xampp\htdocs\ServiTrack\):
+
+  panel.php
+      Pantalla principal. Muestra tres contadores (trabajos
+      pendientes, trabajos del mes, clientes), tres accesos rápidos
+      y dos listas: trabajos pendientes y últimos trabajos.
+
+  trabajos.php
+      Lista completa de trabajos. Tiene pestañas (Todos / En curso /
+      Terminados), buscador por cliente, resumen (cantidad, horas,
+      total, pendiente de cobro), tabla con ID, estado y cobro,
+      aviso de trabajos atrasados y total por cliente.
+
+  CargaDeTrabajo.html
+      Formulario con 4 secciones: cliente y trabajo, fechas y horas,
+      presupuesto (precio por hora y materiales) y comprobantes.
+
+  CargaDeTrabajo.php
+      Recibe el formulario por POST, valida, calcula la mano de obra
+      (horas x precio por hora) y el total, asigna un ID automático
+      y muestra un resumen. NO guarda todavía.
+
+  CargaDeClientes.html
+      Formulario con 4 secciones: datos principales, contacto,
+      dirección y otros.
+
+  CargaDeClientes.php
+      Recibe el formulario por POST, valida los datos, asigna un ID
+      automático y muestra un resumen. NO guarda todavía.
+
+  datos_ejemplo.php
+      Datos de ejemplo compartidos: 8 trabajos y 5 clientes. Lo usan
+      panel.php, trabajos.php, CargaDeTrabajo.php y
+      CargaDeClientes.php. Con la base de datos se reemplaza por
+      consultas.
+
+  conexion.php
+      Conecta PHP con MySQL (base "servitrack"). HOY NO SE USA, se
+      va a necesitar al conectar la base.
+
+  migracion_clientes.sql
+      Agrega 6 campos a la tabla clientes (tipo, razon_social,
+      whatsapp, ciudad, observaciones, activo). Se ejecuta una sola
+      vez en phpMyAdmin, cuando se conecte la base. HOY NO SE USA.
+
+Carpeta css/:
+
+  style.css        (TUYO, sin tocar) colores, tipografías, header,
+                   footer y botones generales.
+  formularios.css  Estilos de los dos formularios y de las pantallas
+                   de resumen y errores.
+  panel.css        Estilos del panel.
+  trabajos.css     Estilos de la lista de trabajos.
+
+Archivos tuyos que NO se tocaron:
+  inicio.html, inicio copy.html, style.css, servitrack.sql.
+
+Archivos que existieron en versiones anteriores y YA NO se usan:
+  carga-trabajo.css y carga-clientes.css (se unificaron en
+  formularios.css). Se pueden borrar.
+
+
+---------------------------------------------------------------------
+3. HISTORIAL DE CAMBIOS (EN ORDEN)
+---------------------------------------------------------------------
+ 1) Mejora de CargaDeTrabajo.html. Errores del original corregidos:
+      - Los 4 inputs de archivo tenían el mismo id.
+      - Los checkboxes tenían el mismo name y PHP recibía solo uno
+        (ahora TipoDeTrabajo[] con value).
+      - type="datetime" no es válido y no tenía name.
+      - Había labels apuntando a ids que no existían.
+      - Header y footer estaban vacíos.
+      - lang="en" pasó a lang="es".
+
+ 2) Primer panel (panel.php) conectado a la base. Dio el error
+    "Table servitrack.trabajos doesn't exist" porque la base estaba
+    vacía (no se había importado servitrack.sql).
+
+ 3) Panel sin base de datos: pasó a usar datos de ejemplo.
+
+ 4) Comentarios explicativos agregados a todos los archivos.
+
+ 5) Se creó un Claude Doc sobre si la carga de trabajo debería ser
+    PHP. Conclusión: dejar .html por ahora y pasarlo a .php al
+    conectar la base.
+
+ 6) Diseño completo de CargaDeClientes (varias direcciones, CUIT
+    validado, facturación plegable, etc.).
+
+ 7) SIMPLIFICACIÓN PARA EL EXAMEN:
+      - Una sola dirección en clientes.
+      - Sin validación de CUIT.
+      - Sin autocompletado con fetch.
+      - Un solo CSS para los formularios.
+      - Flexbox en lugar de grid.
+      - foreach e if en lugar de funciones avanzadas.
+      - 6 campos nuevos en clientes en vez de 11.
+
+ 8) Precio por hora en la carga de trabajo:
+      Mano de obra = horas x precio por hora
+      Total = mano de obra + materiales
+
+ 9) SE SACÓ TODO EL JAVASCRIPT de los formularios. El cálculo, las
+    validaciones y el resumen pasaron a PHP:
+      - CargaDeTrabajo.php y CargaDeClientes.php (nuevos).
+      - Los botones pasaron a decir "Calcular y revisar" y
+        "Revisar cliente" porque todavía no guardan.
+      - Se agregaron estilos de resumen y errores en
+        formularios.css.
+
+10) Panel de trabajos (trabajos.php) con:
+      - Pestañas por estado, buscador por cliente y resumen.
+      - Estado de cobro (Cobrado / Por cobrar).
+      - Trabajos atrasados (en curso hace más de 15 días).
+      - Total por cliente.
+    Se creó datos_ejemplo.php compartido, y panel.php pasó a usarlo.
+    El enlace "Trabajos" se agregó al menú de todas las páginas.
+
+11) ID automático de clientes (simulado):
+      $nuevo_id = max(array_keys($clientes)) + 1;
+    La lista de clientes pasó a datos_ejemplo.php, y
+    CargaDeTrabajo.php dejó de tener su propia lista duplicada.
+
+12) ID automático de trabajos (simulado):
+      $nuevo_id = max(array_column($trabajos, "id")) + 1;
+    Se agregó una columna ID en la tabla de trabajos.php.
+
+13) Atajos visibles ("← Panel" y "Ver todos los trabajos") arriba de
+    cada página, porque el menú del header se esconde en pantallas
+    angostas y necesita JavaScript para abrirse.
+
+
+---------------------------------------------------------------------
+4. CÓMO FUNCIONA EL FLUJO ACTUAL
+---------------------------------------------------------------------
+CARGAR UN TRABAJO
+  1. La persona completa CargaDeTrabajo.html y aprieta "Calcular y
+     revisar".
+  2. Los datos viajan por POST a CargaDeTrabajo.php.
+  3. PHP los lee con $_POST y los valida (cliente, trabajo
+     realizado, al menos un tipo, fecha "Desde", fecha "Hasta" no
+     anterior, sin negativos, máximo 4 comprobantes).
+  4. Si hay errores, los muestra. Si no, calcula y muestra el
+     resumen con el ID asignado.
+  5. TODAVÍA NO se guarda en ninguna parte.
+
+CARGAR UN CLIENTE
+  Igual, con CargaDeClientes.html y CargaDeClientes.php. Valida
+  nombre, tipo, mail, teléfono, WhatsApp, dirección y ciudad. Si el
+  WhatsApp queda vacío, usa el teléfono.
+
+VER TRABAJOS
+  trabajos.php lee los filtros de la URL con $_GET, recorre la lista
+  con foreach, filtra, calcula el resumen y muestra la tabla.
+
+
+---------------------------------------------------------------------
+5. LIMITACIONES Y COSAS PENDIENTES
+---------------------------------------------------------------------
+  - Nada se guarda: los formularios solo muestran un resumen.
+  - Por eso el próximo ID de cliente es siempre #6 y el de trabajo
+    siempre #9. Con la base se numeran solos (AUTO_INCREMENT).
+  - Los trabajos cargados no aparecen en el panel ni en la lista.
+  - No se puede marcar un trabajo como terminado/cobrado ni editarlo
+    (necesita base de datos).
+  - Los comprobantes no se guardan (solo se muestran los nombres).
+  - El botón "Volver" no conserva lo escrito. Usar "atrás" del
+    navegador (Alt + flecha izquierda) o convertir el formulario a
+    .php.
+  - El menú del header en celular no se abre (necesita JavaScript).
+    Se agregaron atajos visibles como alternativa.
+  - Las fechas de ejemplo son fijas: "este mes" y "atrasados" cambian
+    con el tiempo.
+  - La lista de clientes del formulario de trabajo está escrita a
+    mano en el HTML (con la base la genera PHP y el archivo pasa a
+    .php).
+  - No hay login: el botón "Acceso" no lleva a ningún lado.
+  - La tabla de trabajos se desplaza hacia los costados en celular.
+  - Nada fue probado en un navegador por mí: revisar todo en XAMPP.
+
+
+---------------------------------------------------------------------
+6. PRÓXIMOS PASOS POSIBLES
+---------------------------------------------------------------------
+  1. Importar servitrack.sql en phpMyAdmin y conectar la base:
+     reemplazar datos_ejemplo.php por consultas con conexion.php.
+  2. Hacer que los formularios guarden (INSERT) y volver al panel.
+  3. Ejecutar migracion_clientes.sql y preparar la de trabajos
+     (ubicación, fecha hasta, mano de obra, materiales, cobrado).
+  4. Marcar trabajos como terminados/cobrados y editarlos.
+  5. Página de detalle de un trabajo (trabajo.php?id=3).
+  6. Login de usuarios.
+
+
+---------------------------------------------------------------------
+7. CONCEPTOS PARA EL EXAMEN
+---------------------------------------------------------------------
+HTML
+  - <form action method>: a dónde y cómo se envían los datos.
+  - name = lo que llega a PHP; id = para CSS y <label for>.
+  - required, type="email", type="date", type="number".
+  - name="X[]" hace que PHP reciba una lista (checkbox, archivos).
+  - enctype="multipart/form-data": obligatorio para subir archivos.
+  - fieldset y legend agrupan campos en secciones.
+
+CSS
+  - Variables: se definen en :root y se usan con var(--nombre).
+  - Flexbox: display:flex, flex-direction, gap, flex:1.
+  - @media (max-width: 768px): diseño responsive.
+  - El último archivo CSS cargado gana (por eso va después).
+
+PHP
+  - $_POST (datos ocultos) y $_GET (datos en la URL).
+  - isset(): pregunta si existe un dato (una casilla sin tildar no
+    se envía).
+  - trim, (float), htmlspecialchars, filter_var, preg_match,
+    in_array, stripos.
+  - Arreglos y arreglos asociativos; foreach; count; array_reverse;
+    array_slice; array_column; array_keys; max; arsort.
+  - header("Location: ...") + exit para redirigir.
+  - require: trae el contenido de otro archivo PHP.
+  - Mezcla de PHP y HTML con if / else / foreach.
+  - number_format y date para dar formato.
+  - $_FILES para los archivos subidos (error == 0 es "subido bien").
+
+Base de datos (para cuando se conecte)
+  - AUTO_INCREMENT: el ID se asigna solo, no se repite y no se
+    reutiliza.
+  - Clave primaria: clientes.id y trabajos.id.
+  - Clave foránea: trabajos.id_cliente apunta a clientes.id.
+  - Validar SIEMPRE en el servidor, no solo en el navegador.
+
+
+---------------------------------------------------------------------
+8. CÓMO PROBAR TODO EN XAMPP
+---------------------------------------------------------------------
+  1. Abrir el panel de XAMPP y poner Apache en "Start".
+     (MySQL no hace falta mientras no se use la base.)
+  2. Copiar los archivos .php y .html a
+     C:\xampp\htdocs\ServiTrack\ y los .css a la carpeta css\.
+  3. Entrar a http://localhost/ServiTrack/panel.php
+     (NUNCA con doble clic sobre el archivo: el PHP no se ejecuta).
+  4. Probar:
+       - Cargar un trabajo con 6,5 horas a $5000 y $12000 de
+         materiales: el total debe dar $ 44.500,00.
+       - Dejar todo vacío y enviar: debe mostrar errores.
+       - Poner "Hasta" anterior a "Desde": debe mostrar error.
+       - En clientes, probar un mail "hola@" y un teléfono con
+         letras.
+       - En trabajos.php, probar las pestañas y buscar "marta".
+  5. Si algo no se ve actualizado, presionar Ctrl + F5.
+
+=====================================================================
+FIN DEL RESUMEN
+=====================================================================

@@ -2,7 +2,8 @@
 SQLyog Ultimate v9.63 
 MySQL - 5.5.5-10.4.32-MariaDB : Database - servitrack
 *********************************************************************
-*/
+*/
+
 
 /*!40101 SET NAMES utf8 */;
 
@@ -71,7 +72,7 @@ DROP TABLE IF EXISTS `oficios`;
 
 CREATE TABLE `oficios` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `nombre_del oficio` varchar(50) DEFAULT NULL,
+  `nombre_del_oficio` varchar(50) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 

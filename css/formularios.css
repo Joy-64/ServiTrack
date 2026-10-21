@@ -1,0 +1,174 @@
+/* formularios.css
+   Estilos de los dos formularios (CargaDeClientes.html y CargaDeTrabajo.html).
+   Va DESPUÉS de style.css porque usa sus variables de color (var(--...)).
+   Conceptos: selectores de clase, modelo de caja, Flexbox, media query. */
+
+/* Contenedor central del formulario */
+.formulario {
+    max-width: 800px;
+    margin: 2rem auto;
+    padding: 0 1rem;
+    font-family: var(--texto);
+}
+
+.formulario h1 {
+    font-family: var(--titulos);
+    color: var(--azul-oscuro);
+    margin-bottom: 1rem;
+}
+
+/* Cada sección del formulario */
+fieldset {
+    background-color: var(--blanco-suave);
+    border: 1px solid var(--gris-oscuro);
+    border-radius: 10px;
+    padding: 1rem;
+    margin-bottom: 1rem;
+}
+
+legend {
+    font-family: var(--subtitulo);
+    color: var(--azul-oscuro);
+    padding: 0 .5rem;
+}
+
+/* Un campo: la etiqueta arriba y el control abajo */
+.campo {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: .75rem;
+}
+
+.campo label {
+    font-family: var(--subtitulo);
+    margin-bottom: .25rem;
+}
+
+/* Varios campos en la misma línea */
+.fila {
+    display: flex;
+    gap: 1rem;
+}
+
+.fila .campo {
+    flex: 1;
+}
+
+/* Controles de texto, listas y áreas de texto */
+input,
+select,
+textarea {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid var(--gris-oscuro);
+    border-radius: 6px;
+    font-family: var(--texto);
+    font-size: 1rem;
+}
+
+/* Las casillas no deben ocupar todo el ancho */
+input[type="checkbox"] {
+    width: auto;
+}
+
+/* Grupo de casillas en una línea */
+.opciones {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.opciones label {
+    font-family: var(--texto);
+}
+
+/* Campo que se puede esconder desde JavaScript */
+.oculto {
+    display: none;
+}
+
+/* Botones */
+.botones {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+
+.boton-sec {
+    background-color: var(--gris-claro);
+}
+
+/* En pantallas chicas los campos se apilan */
+@media (max-width: 768px) {
+    .fila {
+        flex-direction: column;
+    }
+}
+
+/* ---- Pantallas de resumen y de errores (CargaDeTrabajo.php / CargaDeClientes.php) ---- */
+
+/* Tabla de datos: una fila por dato */
+.resultado {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: var(--blanco-suave);
+    margin-bottom: 1rem;
+}
+
+.resultado th,
+.resultado td {
+    padding: 8px;
+    border-bottom: 1px solid var(--gris-claro);
+    text-align: left;
+}
+
+.resultado th {
+    width: 35%;
+    font-family: var(--subtitulo);
+}
+
+/* Fila del total, resaltada */
+.resultado .total td,
+.resultado .total th {
+    background-color: var(--verde-transparente);
+    font-weight: bold;
+}
+
+/* Aviso de errores */
+.error-lista {
+    background-color: #fdecec;
+    border: 1px solid #b91c1c;
+    border-radius: 10px;
+    padding: 1rem 1rem 1rem 2rem;
+    margin-bottom: 1rem;
+}
+
+.error-lista li {
+    list-style: disc;
+}
+
+/* Aviso informativo */
+.aviso {
+    background-color: var(--blanco-suave);
+    border-left: 5px solid var(--azul-intermedio);
+    padding: .75rem 1rem;
+    margin-bottom: 1rem;
+}
+
+/* Enlaces con forma de botón (los de las pantallas de resumen) */
+a.boton {
+    display: inline-block;
+    color: var(--negro-suave);
+}
+
+/* Atajos de navegación en el cuerpo de la página */
+.atajos {
+    display: flex;
+    gap: 1.5rem;
+    margin-bottom: 1rem;
+}
+
+.atajos a {
+    color: var(--azul-intermedio);
+    text-decoration: underline;
+}
