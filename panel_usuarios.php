@@ -36,8 +36,8 @@
     <!--ACA TERMINA-->
 
     <!--ACA empieza el Panel de usuarios-->
-
-     <div class="container mt-5">
+<section> 
+         <div class="container mt-5">
         <div class="row mb-4">
             <div class="col">
                 <h1>Usuarios</h1>
@@ -81,6 +81,7 @@
         </table>
     </div>
 
+</section>
 
     <!--ACA comienza el footer, que incluye logo sin texto, links como en el header y boton de descarga de app-->
 
