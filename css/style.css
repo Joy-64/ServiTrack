@@ -1,5 +1,5 @@
 *{
-     margin: 0;
+    margin: 0;
     padding: 0;
     box-sizing: border-box;
     text-decoration: none;
@@ -50,10 +50,14 @@
 /*ACA esta el header en grid*/
 header{
     display: grid;
-    grid-template-columns: 1fr 3fr 1fr;
+    grid-template-columns: 0.5fr 2.5fr 0.5fr;
     grid-template-rows: 1fr;
     background-color: var(--azul-oscuro);
-    
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 9999;
+
 }
 
 .header-logo{
@@ -69,7 +73,7 @@ header{
 
 .header-nav ul {
     display: flex;
-    justify-content: space-around;
+    justify-content:space-around;
     align-items: center;
     width: 100%;
 }
@@ -77,14 +81,14 @@ header{
 .items-menu {
     font-family: var(--titulos);
     color: var(--azul-claro);
-    padding: 25px 35px;
+    padding: 15px 25px;
     text-align: center;
-    min-width: 120px;
+    min-width: 100px;
     white-space: nowrap;
 }
 
 .items-menu:hover{
-    font-size: 1.10rem;
+    font-size: 1rem;
     color: var(--negro-suave);
     transition: 900ms;
     background-color: var(--verde-transparente);
@@ -102,10 +106,7 @@ header{
     display: none;
 }
 
-.foot-enlace a{
-    padding: 0 3rem;
-    color: white;
-}
+
 /*CLASES RENOMBRADAS PARA QUE SU FUNCION SEA MAS CLARA*/
 .footer-logo img{
     margin-top: 1.4rem;
@@ -120,16 +121,22 @@ header{
     text-align: center;
 }
 /*Modificadores del footer*/
-.foot-enlace{
-
+.footer {
+    background-color: var(--azul-oscuro);
+}
+.foot-enlace a{
+    padding: 1rem;
+    color: white;
     text-align: center;
-    padding: 3rem;
-
+}
+.foot-enlace{
+    display: flex;
+    justify-content: center;
 }
 input {
     padding: 5px;
 }
-.contacto-div{
+.contactanos-div{
     display: flex;
     flex-direction: column;
     padding: 5px 15px;
@@ -173,6 +180,7 @@ input {
 
 .clase-section{
     padding: 1rem ;
+    margin-top: 100px;
 }
 
 #map{
@@ -181,12 +189,9 @@ input {
     background-color: #3B82F6;
 }
 
-.footer {
-    background-color: var(--azul-oscuro);
-}
 
 /*responsive*/
-@media (max-width: 768px){
+@media (max-width: 900px){
     header{
         grid-template-columns: 1fr;
         grid-template-rows: auto auto auto;
@@ -207,7 +212,6 @@ input {
 
     .header-nav ul {
         flex-direction: column;
-        gap: .5rem;
         width: 100%;
     }
 .items-menu:hover{
