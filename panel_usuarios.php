@@ -47,8 +47,8 @@
             </div>
         </div>
 
-        <table class="table table-striped table-hover">
-            <thead class="table-dark">
+        <table>
+            <thead>
                 <tr>
                     <th>ID</th>
                     <th>Nombre</th>

@@ -1,4 +1,4 @@
-<?php require_once '../modelo/usuarios.php'; 
+<?php require_once '../../modelo/usuarios.php'; 
 $id = $_GET['id'] ?? null;
 $usuario = $id ? Usuario::obtenerPorId($id) : null;
 ?>
@@ -43,4 +43,3 @@ $usuario = $id ? Usuario::obtenerPorId($id) : null;
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
-<!--Comentario de prueba-->

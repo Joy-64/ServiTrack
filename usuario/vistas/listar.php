@@ -1,4 +1,4 @@
-<?php require_once '../modelo/usuarios.php'; ?>
+<?php require_once '../../modelo/usuarios.php'; ?>
 <!DOCTYPE html>
 <html lang="es">
 <head>

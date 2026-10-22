@@ -1,4 +1,4 @@
-<?php require_once '../modelo/usuarios.php'; 
+<?php require_once '../../modelo/usuarios.php'; 
                     $id = $_GET['id'] ?? null;
 $usuario = $id ? Usuario::obtenerPorId($id) : null;
 $titulo = $usuario ? 'Editar Usuario' : 'Agregar Usuario';
