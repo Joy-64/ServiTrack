@@ -40,7 +40,8 @@ $estiloFila = 'display: flex; flex-wrap: wrap; gap: 0.5rem;';
 $estiloAviso = 'padding: 10px 15px; margin-bottom: 1rem; border-radius: 12px;';
 
 // Función de ayuda: escribe un texto de forma segura, para que no se ejecute código ajeno dentro de la página.
-function limpiar($texto) {
+function limpiar($texto)
+{
     return htmlspecialchars($texto ?? '', ENT_QUOTES, 'UTF-8');
 }
 ?>
@@ -51,8 +52,8 @@ function limpiar($texto) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Panel de usuario</title>
-        <link rel="icon" href="./img/logo3.0.jpeg">
-        <link rel="stylesheet" href="./css/style.css">
+    <link rel="icon" href="./img/logo3.0.jpeg">
+    <link rel="stylesheet" href="./css/style.css">
     <!--LINKS para que funcione el mapa-->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
         integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
@@ -85,10 +86,10 @@ function limpiar($texto) {
 
         <!-- AVISOS: confirman si los cambios se guardaron o si hubo un problema. -->
         <?php if (isset($_GET['guardado'])): ?>
-        <p style="<?php echo $estiloAviso; ?> background-color: var(--verde-transparente);">Cambios guardados</p>
+            <p style="<?php echo $estiloAviso; ?> background-color: var(--verde-transparente);">Cambios guardados</p>
         <?php endif; ?>
         <?php if (isset($_GET['error'])): ?>
-        <p style="<?php echo $estiloAviso; ?> background-color: var(--gris-oscuro); color: var(--blanco-suave);">No se pudieron guardar los cambios. Revisá que los datos obligatorios estén completos e intentá de nuevo.</p>
+            <p style="<?php echo $estiloAviso; ?> background-color: var(--gris-oscuro); color: var(--blanco-suave);">No se pudieron guardar los cambios. Revisá que los datos obligatorios estén completos e intentá de nuevo.</p>
         <?php endif; ?>
 
         <!-- PRESENTACIÓN: resumen del perfil con foto, nombre, oficio y ubicación, como el encabezado de LinkedIn. -->
@@ -98,10 +99,10 @@ function limpiar($texto) {
             <div style="padding: 0 1.5rem 1.5rem;">
                 <!-- Foto de perfil circular; si todavía no hay foto, se muestra un círculo gris. -->
                 <?php if (!empty($usuario->Imagen)): ?>
-                <img src="<?php echo limpiar($usuario->Imagen); ?>" alt="Foto de perfil" width="130" height="130"
-                    style="display: block; border-radius: 50%; object-fit: cover; margin-top: -65px; border: 4px solid var(--blanco-suave);">
+                    <img src="<?php echo limpiar($usuario->Imagen); ?>" alt="Foto de perfil" width="130" height="130"
+                        style="display: block; border-radius: 50%; object-fit: cover; margin-top: -65px; border: 4px solid var(--blanco-suave);">
                 <?php else: ?>
-                <div style="display: flex; align-items: center; justify-content: center; width: 130px; height: 130px; border-radius: 50%; margin-top: -65px; border: 4px solid var(--blanco-suave); background-color: var(--gris-oscuro); color: var(--blanco-suave);">Sin foto</div>
+                    <div style="display: flex; align-items: center; justify-content: center; width: 130px; height: 130px; border-radius: 50%; margin-top: -65px; border: 4px solid var(--blanco-suave); background-color: var(--gris-oscuro); color: var(--blanco-suave);">Sin foto</div>
                 <?php endif; ?>
 
                 <!-- Nombre completo; en un perfil nuevo invita a completar los datos. -->
@@ -118,7 +119,7 @@ function limpiar($texto) {
             <!-- Campos ocultos: le dicen a acciones.php si hay que agregar o editar, y a quién. -->
             <input type="hidden" name="accion" value="<?php echo $usuario ? 'editar' : 'agregar'; ?>">
             <?php if ($usuario): ?>
-            <input type="hidden" name="id" value="<?php echo limpiar($usuario->Id); ?>">
+                <input type="hidden" name="id" value="<?php echo limpiar($usuario->Id); ?>">
             <?php endif; ?>
 
             <!-- DATOS PERSONALES: los obligatorios son los que la tabla trabajadores no acepta vacíos. -->
@@ -139,7 +140,7 @@ function limpiar($texto) {
                         <select id="tipo_doc" name="tipo_doc" required>
                             <option value="">Elegí una opción</option>
                             <?php foreach ($tiposDocumento as $numero => $descripcion): ?>
-                            <option value="<?php echo $numero; ?>"<?php echo (($usuario->IdTDoc ?? '') == $numero) ? ' selected' : ''; ?>><?php echo $descripcion; ?></option>
+                                <option value="<?php echo $numero; ?>" <?php echo (($usuario->IdTDoc ?? '') == $numero) ? ' selected' : ''; ?>><?php echo $descripcion; ?></option>
                             <?php endforeach; ?>
                         </select>
                     </div>
@@ -160,7 +161,7 @@ function limpiar($texto) {
                         <select id="sexo" name="sexo" required>
                             <option value="">Elegí una opción</option>
                             <?php foreach ($opcionesSexo as $opcion): ?>
-                            <option value="<?php echo $opcion; ?>"<?php echo (($usuario->Sexo ?? '') === $opcion) ? ' selected' : ''; ?>><?php echo $opcion; ?></option>
+                                <option value="<?php echo $opcion; ?>" <?php echo (($usuario->Sexo ?? '') === $opcion) ? ' selected' : ''; ?>><?php echo $opcion; ?></option>
                             <?php endforeach; ?>
                         </select>
                     </div>
@@ -172,11 +173,17 @@ function limpiar($texto) {
                 <h2 style="<?php echo $estiloTitulo; ?>">Oficio</h2>
                 <div class="contactanos-div">
                     <label for="oficio">Oficio que realizás</label>
-                    <input type="text" id="oficio" name="oficio" list="lista-oficios" placeholder="Ej: Plomero" value="<?php echo limpiar($usuario->Oficio ?? ''); ?>" required>
+                    <select id="oficio" name="oficio" required>
+                        <option value="">Elegí una opción</option>
+                        <?php foreach ($oficios as $oficio): ?>
+                            <option value="<?php echo limpiar($oficio); ?>" <?php echo (($usuario->Oficio ?? '') === $oficio) ? ' selected' : ''; ?>><?php echo $oficio; ?></option>
+                        <?php endforeach; ?>
+                    </select>
+                    <input type="text" id="oficio" name="oficio" list="lista-oficios" placeholder="Otro" value="<?php echo limpiar($usuario->Oficio ?? ''); ?>" required>
                     <datalist id="lista-oficios">
                         <?php foreach ($oficios as $oficio): ?>
-                        <option value="<?php echo limpiar($oficio); ?>">
-                        <?php endforeach; ?>
+                            <option value="<?php echo limpiar($oficio); ?>">
+                            <?php endforeach; ?>
                     </datalist>
                 </div>
             </article>
@@ -252,12 +259,12 @@ function limpiar($texto) {
         <p class="derechos">&copy; @año | ServiTrack. Todos los derechos reservados.</p>
 
     </footer>
-     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
     <!-- SCRIPT DE LA FOTO: cuando se elige o arrastra una imagen, muestra su nombre y una vista previa. -->
     <script>
         const campoImagen = document.getElementById('imagen');
-        campoImagen.addEventListener('change', function () {
+        campoImagen.addEventListener('change', function() {
             const archivo = campoImagen.files[0];
             if (!archivo) {
                 return;

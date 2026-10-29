@@ -2,7 +2,8 @@
 SQLyog Ultimate v9.63 
 MySQL - 5.5.5-10.1.38-MariaDB : Database - servitrack
 *********************************************************************
-*/
+*/
+
 
 /*!40101 SET NAMES utf8 */;
 
@@ -86,7 +87,20 @@ CREATE TABLE `oficios` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+
 /*Data for the table `oficios` */
+INSERT INTO `oficios` (`id`, `descripcion`) VALUES
+(1, 'Carpintero'),
+(2, 'Albañil'),
+(3, 'Cerrajero'),
+(4, 'Electricista'),
+(5, 'Plomero'),
+(6, 'Herrero'),
+(7, 'Gasista'),
+(8, 'Pintor'),
+(9, 'Soldador'),
+(10, 'Cerrajero'),
+(12, 'Fumigador');
 
 /*Table structure for table `tipos_documentos` */
 
