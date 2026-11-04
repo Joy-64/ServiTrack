@@ -99,7 +99,6 @@ INSERT INTO `oficios` (`id`, `descripcion`) VALUES
 (7, 'Gasista'),
 (8, 'Pintor'),
 (9, 'Soldador'),
-(10, 'Cerrajero'),
 (12, 'Fumigador');
 
 /*Table structure for table `tipos_documentos` */

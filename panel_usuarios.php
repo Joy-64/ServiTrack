@@ -28,10 +28,10 @@ $usuario = $id ? Usuario::obtenerPorId($id) : null;
 
 // Pide los oficios ya cargados para sugerirlos al escribir; si el modelo aún no los ofrece, queda una lista vacía.
 $oficios = method_exists('Usuario', 'obtenerOficios') ? Usuario::obtenerOficios() : [];
-
+$oficiosUsuario = $usuario ? Usuario::obtenerOficiosDeUsuario($usuario->Id) : [];
 // Opciones de las listas desplegables (los números coinciden con el id de la tabla tipos_documentos).
 $tiposDocumento = [1 => 'DNI', 2 => 'LE', 3 => 'LC', 4 => 'PASAPORTE'];
-$opcionesSexo = ['Masculino', 'Femenino', 'Otro'];
+$opcionesSexo = ['Masculino', 'Femenino'];
 
 // Estilos que se repiten, armados con los colores y fuentes de style.css (así no hacen falta clases nuevas).
 $estiloTarjeta = 'background-color: var(--blanco-suave); border-radius: 12px; padding: 1.5rem; margin-bottom: 1rem;';
@@ -108,8 +108,7 @@ function limpiar($texto)
                 <!-- Nombre completo; en un perfil nuevo invita a completar los datos. -->
                 <h1 style="font-family: var(--titulos); margin-top: 0.5rem;"><?php echo $usuario ? limpiar($usuario->Nombre . ' ' . $usuario->Apellido) : 'Completá tu perfil'; ?></h1>
                 <!-- Oficio del trabajador, que funciona como el titular del perfil. -->
-                <p style="font-family: var(--subtitulo);"><?php echo !empty($usuario->Oficio) ? limpiar($usuario->Oficio) : 'Agregá tu oficio en la sección Oficio'; ?></p>
-                <!-- Localidad donde trabaja. -->
+                <?php echo !empty($oficiosUsuario) ? limpiar(implode(', ', $oficiosUsuario)) : 'Agregá tus oficios en la sección Oficios'; ?>
                 <p style="color: var(--gris-oscuro);"><?php echo !empty($usuario->Localidad) ? limpiar($usuario->Localidad) : 'Agregá tu ubicación en la sección Domicilio'; ?></p>
             </div>
         </article>
@@ -168,23 +167,32 @@ function limpiar($texto)
                 </div>
             </article>
 
-            <!-- OFICIO: se escribe libremente y sugiere los oficios que ya existen para evitar duplicados. -->
+            <!-- OFICIOS: se elige uno de la lista o se escribe en "Otro"; cada oficio elegido aparece al lado y se puede quitar. -->
             <article style="<?php echo $estiloTarjeta; ?>">
-                <h2 style="<?php echo $estiloTitulo; ?>">Oficio</h2>
-                <div class="contactanos-div">
-                    <label for="oficio">Oficio que realizás</label>
-                    <select id="oficio" name="oficio" required>
-                        <option value="">Elegí una opción</option>
-                        <?php foreach ($oficios as $oficio): ?>
-                            <option value="<?php echo limpiar($oficio); ?>" <?php echo (($usuario->Oficio ?? '') === $oficio) ? ' selected' : ''; ?>><?php echo $oficio; ?></option>
-                        <?php endforeach; ?>
-                    </select>
-                    <input type="text" id="oficio" name="oficio" list="lista-oficios" placeholder="Otro" value="<?php echo limpiar($usuario->Oficio ?? ''); ?>" required>
-                    <datalist id="lista-oficios">
-                        <?php foreach ($oficios as $oficio): ?>
-                            <option value="<?php echo limpiar($oficio); ?>">
+                <h2 style="<?php echo $estiloTitulo; ?>">Oficios</h2>
+                <div style="<?php echo $estiloFila; ?>">
+                    <!-- Selector con los oficios guardados en la tabla oficios; al elegir uno se agrega a la lista. -->
+                    <div class="contactanos-div">
+                        <label for="selector-oficio">Elegí un oficio</label>
+                        <select id="selector-oficio">
+                            <option value="">Elegí una opción</option>
+                            <?php foreach ($oficios as $oficio): ?>
+                                <option value="<?php echo limpiar($oficio); ?>"><?php echo limpiar($oficio); ?></option>
                             <?php endforeach; ?>
-                    </datalist>
+                        </select>
+                    </div>
+                    <!-- Campo "Otro": para un oficio que no está en la lista; se suma con el botón o con Enter. -->
+                    <div class="contactanos-div">
+                        <label for="otro-oficio">Otro</label>
+                        <input type="text" id="otro-oficio" placeholder="Escribí otro oficio">
+                        <button type="button" id="agregar-otro" class="boton" style="margin-top: 0.5rem;">Agregar</button>
+                    </div>
+                    <!-- Lista de oficios elegidos; cada uno trae su botón para quitarlo, y el aviso explica qué falta. -->
+                    <div class="contactanos-div">
+                        <p>Oficios elegidos</p>
+                        <ul id="oficios-elegidos"></ul>
+                        <p id="aviso-oficios"></p>
+                    </div>
                 </div>
             </article>
 
@@ -251,12 +259,12 @@ function limpiar($texto)
 
         <nav class="foot-enlace">
             <a href="index.html">Inicio</a>
-            <a href="servicios.html">Servicios</a>
             <a href="quienes-somos.html">Quienes somos</a>
-            <a href="contacto.html">Contacto</a>
+            <a href="contactanos.html">Contactanos</a>
+            <a href="terminos-y-condiciones.html">Términos y condiciones</a>
         </nav>
 
-        <p class="derechos">&copy; @año | ServiTrack. Todos los derechos reservados.</p>
+        <p class="derechos">&copy; 2026 | ServiTrack. Todos los derechos reservados.</p>
 
     </footer>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
@@ -273,6 +281,90 @@ function limpiar($texto)
             const vistaPrevia = document.getElementById('vista-previa');
             vistaPrevia.src = URL.createObjectURL(archivo);
             vistaPrevia.style.display = 'block';
+        });
+    </script>
+    <!-- SCRIPT DE OFICIOS: arma la lista de oficios elegidos, evita repetidos y permite quitarlos antes de guardar. -->
+    <script>
+        const selectorOficio = document.getElementById('selector-oficio');
+        const campoOtro = document.getElementById('otro-oficio');
+        const listaOficios = document.getElementById('oficios-elegidos');
+        const avisoOficios = document.getElementById('aviso-oficios');
+
+        // Muestra un mensaje cuando la lista está vacía y lo borra cuando ya hay oficios.
+        function actualizarAviso() {
+            avisoOficios.textContent = listaOficios.children.length === 0 ? 'Todavía no elegiste ningún oficio.' : '';
+        }
+
+        // Agrega un oficio a la lista: pone la primera letra en mayúscula, evita repetidos y crea el campo oculto que viaja al guardar.
+        function agregarOficio(texto) {
+            texto = texto.trim();
+            if (texto === '') {
+                return;
+            }
+            texto = texto.charAt(0).toUpperCase() + texto.slice(1).toLowerCase();
+            const elegidos = listaOficios.querySelectorAll('input[name="oficios[]"]');
+            for (const campo of elegidos) {
+                if (campo.value.toLowerCase() === texto.toLowerCase()) {
+                    return;
+                }
+            }
+            const item = document.createElement('li');
+            item.style.cssText = 'display: flex; justify-content: space-between; align-items: center; gap: 0.5rem; margin-top: 0.5rem;';
+            const nombre = document.createElement('span');
+            nombre.textContent = texto;
+            const oculto = document.createElement('input');
+            oculto.type = 'hidden';
+            oculto.name = 'oficios[]';
+            oculto.value = texto;
+            const quitar = document.createElement('button');
+            quitar.type = 'button';
+            quitar.className = 'boton';
+            quitar.textContent = 'Quitar';
+            quitar.addEventListener('click', function() {
+                item.remove();
+                actualizarAviso();
+            });
+            item.append(nombre, oculto, quitar);
+            listaOficios.appendChild(item);
+            actualizarAviso();
+        }
+
+        // Al elegir un oficio del selector, se agrega a la lista y el selector vuelve a su opción inicial.
+        selectorOficio.addEventListener('change', function() {
+            agregarOficio(selectorOficio.value);
+            selectorOficio.value = '';
+        });
+
+        // El botón Agregar suma lo escrito en el campo "Otro" y lo deja vacío para el siguiente.
+        document.getElementById('agregar-otro').addEventListener('click', function() {
+            agregarOficio(campoOtro.value);
+            campoOtro.value = '';
+            campoOtro.focus();
+        });
+
+        // Con Enter en el campo "Otro" también se agrega el oficio, en vez de enviar el formulario.
+        campoOtro.addEventListener('keydown', function(evento) {
+            if (evento.key === 'Enter') {
+                evento.preventDefault();
+                agregarOficio(campoOtro.value);
+                campoOtro.value = '';
+            }
+        });
+
+        // Si el trabajador ya tiene oficios guardados, se cargan en la lista al abrir la página.
+        const oficiosGuardados = <?php echo json_encode($oficiosUsuario, JSON_HEX_TAG | JSON_HEX_AMP); ?>;
+        oficiosGuardados.forEach(function(oficio) {
+            agregarOficio(oficio);
+        });
+        actualizarAviso();
+
+        // Antes de guardar, exige al menos un oficio en la lista.
+        document.querySelector('form').addEventListener('submit', function(evento) {
+            if (listaOficios.children.length === 0) {
+                evento.preventDefault();
+                avisoOficios.textContent = 'Agregá al menos un oficio para poder guardar.';
+                selectorOficio.focus();
+            }
         });
     </script>
 </body>
