@@ -142,11 +142,12 @@ input {
     padding: 5px 15px;
     width: 250px;
 }
-.contacto-msj{
+.contactanos-msj{
     width: 200%;
     padding: 5px;
     height: 150px;
     resize: none;
+
 }
 .boton-form{
     display: flex;
