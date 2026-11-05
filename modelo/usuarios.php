@@ -3,17 +3,34 @@ require_once __DIR__ . '/../core/Database.php';
 
 class Usuario
 {
+    private const NOMBRE_CLASE = 'Usuario';
     public $Id;
     public $Nombre;
+    public $Apellido;
+    public $Sexo;
+    public $CUIL;
+    public $NDoc;
+    public $FNacimiento;
+    public $Domicilio;
+    public $CodPostal;
+    public $Localidad;
     public $Oficio;
     public $Telefono;
     public $Email;
     public $Imagen;
 
-    public function __construct($Id = null, $Nombre = '', $Oficio = '', $Telefono = '', $Email = '', $Imagen = '')
+    public function __construct($Id = null, $Nombre = '', $Apellido = '', $Sexo = '', $CUIL = '', $NDoc = '', $FNacimiento = '', $Domicilio = '', $CodPostal = '', $Localidad = '', $Oficio = '', $Telefono = '', $Email = '', $Imagen = '')
     {
         $this->Id = $Id;
         $this->Nombre = $Nombre;
+        $this->Apellido = $Apellido;
+        $this->Sexo = $Sexo;
+        $this->CUIL = $CUIL;
+        $this->NDoc = $NDoc;
+        $this->FNacimiento = $FNacimiento;
+        $this->Domicilio = $Domicilio;
+        $this->CodPostal = $CodPostal;
+        $this->Localidad = $Localidad;
         $this->Oficio = $Oficio;
         $this->Telefono = $Telefono;
         $this->Email = $Email;
@@ -22,26 +39,34 @@ class Usuario
 
     public static function obtenerTodas()
     {
-        return [];
+        try {
+            $db = Database::getInstance()->getConnection();
+            $stmt = $db->prepare('SELECT * FROM usuarios ORDER BY idUsuario DESC');
+            $stmt->execute();
+            return $stmt->fetchAll(PDO::FETCH_CLASS, self::NOMBRE_CLASE);
+        } catch (PDOException $e) {
+            error_log("Error al obtener usuarios: " . $e->getMessage());
+            return [];
+        };
     }
 
     public static function obtenerPorId($Id)
     {
         $usuarios = self::obtenerTodas();
         foreach ($usuarios as $u) {
-            if ($u->Id == $Id) { //revisar posible error de Id//
+            if ($u->Id == $Id) { 
                 return $u;
             }
         }
         return null;
     }
 
-    public static function agregar($Nombre, $Oficio, $Telefono, $Email, $Imagen)
+    public static function agregar($Nombre, $Apellido, $Sexo, $CUIL, $NDoc, $FNacimiento, $Domicilio, $CodPostal, $Localidad, $Oficio, $Telefono, $Email, $Imagen)
     {
         return true;
     }
 
-    public static function editar($Id, $Nombre, $Oficio, $Telefono, $Email, $Imagen)
+    public static function editar($Id, $Nombre, $Apellido, $Sexo, $CUIL, $NDoc, $FNacimiento, $Domicilio, $CodPostal, $Localidad, $Oficio, $Telefono, $Email, $Imagen)
     {
         return true;
     }

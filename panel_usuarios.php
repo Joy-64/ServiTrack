@@ -25,7 +25,7 @@ $id = $_GET['id'] ?? null;
 
 // Pide al modelo los datos de ese trabajador; si no hay id, queda vacío (null).
 $usuario = $id ? Usuario::obtenerPorId($id) : null;
-
+var_dump($id); 
 // Pide los oficios ya cargados para sugerirlos al escribir; si el modelo aún no los ofrece, queda una lista vacía.
 $oficios = method_exists('Usuario', 'obtenerOficios') ? Usuario::obtenerOficios() : [];
 $oficiosUsuario = $usuario ? Usuario::obtenerOficiosDeUsuario($usuario->Id) : [];

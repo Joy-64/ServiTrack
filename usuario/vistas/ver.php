@@ -21,6 +21,14 @@ $usuario = $id ? Usuario::obtenerPorId($id) : null;
                     <div class="card-body">
                         <p><strong>ID:</strong> <?php echo $usuario->Id; ?></p>
                         <p><strong>Nombre:</strong> <?php echo $usuario->Nombre; ?></p>
+                        <p><strong>Apellido:</strong> <?php echo $usuario->Apellido; ?></p>
+                        <p><strong>Sexo:</strong> <?php echo $usuario->Sexo; ?></p>
+                        <p><strong>CUIL:</strong> <?php echo $usuario->CUIL; ?></p>
+                        <p><strong>N° Documento:</strong> <?php echo $usuario->NDoc; ?></p>
+                        <p><strong>Fecha Nacimiento:</strong> <?php echo $usuario->FNacimiento; ?></p>
+                        <p><strong>Domicilio:</strong> <?php echo $usuario->Domicilio; ?></p>
+                        <p><strong>Codigo Postal:</strong> <?php echo $usuario->CodPostal; ?></p>
+                        <p><strong>Localidad:</strong> <?php echo $usuario->Localidad; ?></p>
                         <p><strong>Oficio:</strong> <?php echo $usuario->Oficio; ?></p>
                         <p><strong>Telefono:</strong> <?php echo $usuario->Telefono; ?></p>
                         <p><strong>Email:</strong> <?php echo $usuario->Email; ?></p>
