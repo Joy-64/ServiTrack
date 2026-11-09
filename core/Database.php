@@ -34,7 +34,7 @@ class Database {
      */
     private function connect() {
         try {
-            $dsn = "mysql:host={$this->host};dbname={$this->db_name};charset={$this->charset}";
+            $dsn = "mysql:host={$this->host};port=3307;dbname={$this->db_name};charset={$this->charset}";
             
             $this->connection = new PDO(
                 $dsn,

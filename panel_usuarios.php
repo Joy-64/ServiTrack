@@ -29,7 +29,6 @@ $usuario = $id ? Usuario::obtenerPorId($id) : null;
 
 // Pide los oficios de la tabla oficios para mostrarlos en el selector; si el modelo aún no los ofrece, queda una lista vacía.
 $oficios = method_exists('Usuario', 'obtenerOficios') ? Usuario::obtenerOficios() : [];
-
 // Pide los oficios que ya tiene este trabajador (en un perfil nuevo no hay ninguno).
 $oficiosUsuario = $usuario ? Usuario::obtenerOficiosDeUsuario($usuario->Id) : [];
 
