@@ -5,14 +5,15 @@
  * Arquitectura: esta vista usa el modelo, y el modelo habla con la base de datos.
  *
  * Lo que esta página espera del MODELO (modelo/usuarios.php, clase Usuario):
- *   Usuario::obtenerPorId($id) -> objeto con: Id, Nombre, Apellido, IdTDoc, NDoc, Cuil,
- *                                 FNacimiento, Sexo, Imagen, Oficio, Telefono, Email,
- *                                 Domicilio, CodPostal, Localidad
- *   Usuario::obtenerOficios()  -> lista con los oficios ya cargados (opcional)
+ *   Usuario::obtenerPorId($id)            -> objeto con: Id, Nombre, Apellido, IdTDoc, NDoc, Cuil,
+ *                                            FNacimiento, Sexo, Imagen, Telefono, Email,
+ *                                            Domicilio, CodPostal, Localidad
+ *   Usuario::obtenerOficios()             -> lista con todos los oficios de la tabla oficios
+ *   Usuario::obtenerOficiosDeUsuario($id) -> lista con los oficios que ya tiene ese trabajador
  *
  * Lo que esta página espera de ACCIONES (usuarios/acciones.php):
  *   Recibe el formulario por POST (accion, id, nombre, apellido, tipo_doc, ndoc, cuil,
- *   fnacimiento, sexo, oficio, telefono, email, domicilio, codpostal, localidad y el
+ *   fnacimiento, sexo, oficios[] (lista), telefono, email, domicilio, codpostal, localidad y el
  *   archivo imagen), guarda los datos y vuelve acá con ?id=N&guardado=1 (salió bien)
  *   o ?id=N&error=1 (falló).
  */
@@ -26,18 +27,15 @@ $id = $_GET['id'] ?? null;
 // Pide al modelo los datos de ese trabajador; si no hay id, queda vacío (null).
 $usuario = $id ? Usuario::obtenerPorId($id) : null;
 
-// Pide los oficios ya cargados para sugerirlos al escribir; si el modelo aún no los ofrece, queda una lista vacía.
+// Pide los oficios de la tabla oficios para mostrarlos en el selector; si el modelo aún no los ofrece, queda una lista vacía.
 $oficios = method_exists('Usuario', 'obtenerOficios') ? Usuario::obtenerOficios() : [];
+
+// Pide los oficios que ya tiene este trabajador (en un perfil nuevo no hay ninguno).
+$oficiosUsuario = $usuario ? Usuario::obtenerOficiosDeUsuario($usuario->Id) : [];
 
 // Opciones de las listas desplegables (los números coinciden con el id de la tabla tipos_documentos).
 $tiposDocumento = [1 => 'DNI', 2 => 'LE', 3 => 'LC', 4 => 'PASAPORTE'];
-$opcionesSexo = ['Masculino', 'Femenino', 'Otro'];
-
-// Estilos que se repiten, armados con los colores y fuentes de style.css (así no hacen falta clases nuevas).
-$estiloTarjeta = 'background-color: var(--blanco-suave); border-radius: 12px; padding: 1.5rem; margin-bottom: 1rem;';
-$estiloTitulo = 'font-family: var(--subtitulo); color: var(--azul-oscuro); margin-bottom: 1rem;';
-$estiloFila = 'display: flex; flex-wrap: wrap; gap: 0.5rem;';
-$estiloAviso = 'padding: 10px 15px; margin-bottom: 1rem; border-radius: 12px;';
+$opcionesSexo = ['Masculino', 'Femenino'];
 
 // Función de ayuda: escribe un texto de forma segura, para que no se ejecute código ajeno dentro de la página.
 function limpiar($texto)
@@ -82,35 +80,33 @@ function limpiar($texto)
     <!--ACA TERMINA-->
 
     <!-- CONTENIDO: clase-section deja el espacio justo para que el header fijo no tape el perfil. -->
-    <section class="clase-section" style="font-family: var(--texto); color: var(--negro-suave);">
+    <section class="clase-section perfil">
 
         <!-- AVISOS: confirman si los cambios se guardaron o si hubo un problema. -->
         <?php if (isset($_GET['guardado'])): ?>
-            <p style="<?php echo $estiloAviso; ?> background-color: var(--verde-transparente);">Cambios guardados</p>
+            <p class="perfil-aviso perfil-aviso-exito">Cambios guardados</p>
         <?php endif; ?>
         <?php if (isset($_GET['error'])): ?>
-            <p style="<?php echo $estiloAviso; ?> background-color: var(--gris-oscuro); color: var(--blanco-suave);">No se pudieron guardar los cambios. Revisá que los datos obligatorios estén completos e intentá de nuevo.</p>
+            <p class="perfil-aviso perfil-aviso-error">No se pudieron guardar los cambios. Revisá que los datos obligatorios estén completos e intentá de nuevo.</p>
         <?php endif; ?>
 
         <!-- PRESENTACIÓN: resumen del perfil con foto, nombre, oficio y ubicación, como el encabezado de LinkedIn. -->
-        <article style="background-color: var(--blanco-suave); border-radius: 12px; margin-bottom: 1rem; overflow: hidden;">
+        <article class="perfil-presentacion">
             <!-- Banner de color que va detrás de la foto. -->
-            <div style="background-color: var(--azul-oscuro); height: 120px;"></div>
-            <div style="padding: 0 1.5rem 1.5rem;">
+            <div class="perfil-banner"></div>
+            <div class="perfil-datos">
                 <!-- Foto de perfil circular; si todavía no hay foto, se muestra un círculo gris. -->
                 <?php if (!empty($usuario->Imagen)): ?>
-                    <img src="<?php echo limpiar($usuario->Imagen); ?>" alt="Foto de perfil" width="130" height="130"
-                        style="display: block; border-radius: 50%; object-fit: cover; margin-top: -65px; border: 4px solid var(--blanco-suave);">
+                    <img src="<?php echo limpiar($usuario->Imagen); ?>" alt="Foto de perfil" width="130" height="130" class="perfil-foto">
                 <?php else: ?>
-                    <div style="display: flex; align-items: center; justify-content: center; width: 130px; height: 130px; border-radius: 50%; margin-top: -65px; border: 4px solid var(--blanco-suave); background-color: var(--gris-oscuro); color: var(--blanco-suave);">Sin foto</div>
+                    <div class="perfil-foto perfil-foto-vacia">Sin foto</div>
                 <?php endif; ?>
 
                 <!-- Nombre completo; en un perfil nuevo invita a completar los datos. -->
-                <h1 style="font-family: var(--titulos); margin-top: 0.5rem;"><?php echo $usuario ? limpiar($usuario->Nombre . ' ' . $usuario->Apellido) : 'Completá tu perfil'; ?></h1>
-                <!-- Oficio del trabajador, que funciona como el titular del perfil. -->
-                <p style="font-family: var(--subtitulo);"><?php echo !empty($usuario->Oficio) ? limpiar($usuario->Oficio) : 'Agregá tu oficio en la sección Oficio'; ?></p>
-                <!-- Localidad donde trabaja. -->
-                <p style="color: var(--gris-oscuro);"><?php echo !empty($usuario->Localidad) ? limpiar($usuario->Localidad) : 'Agregá tu ubicación en la sección Domicilio'; ?></p>
+                <h1 class="perfil-nombre"><?php echo $usuario ? limpiar($usuario->Nombre . ' ' . $usuario->Apellido) : 'Completá tu perfil'; ?></h1>
+                <!-- Oficios del trabajador, que funcionan como el titular del perfil. -->
+                <p class="perfil-titular"><?php echo !empty($oficiosUsuario) ? limpiar(implode(', ', $oficiosUsuario)) : 'Agregá tus oficios en la sección Oficios'; ?></p>
+                <p class="perfil-ubicacion"><?php echo !empty($usuario->Localidad) ? limpiar($usuario->Localidad) : 'Agregá tu ubicación en la sección Domicilio'; ?></p>
             </div>
         </article>
 
@@ -123,9 +119,9 @@ function limpiar($texto)
             <?php endif; ?>
 
             <!-- DATOS PERSONALES: los obligatorios son los que la tabla trabajadores no acepta vacíos. -->
-            <article style="<?php echo $estiloTarjeta; ?>">
-                <h2 style="<?php echo $estiloTitulo; ?>">Datos personales</h2>
-                <div style="<?php echo $estiloFila; ?>">
+            <article class="perfil-tarjeta">
+                <h2 class="perfil-titulo">Datos personales</h2>
+                <div class="perfil-fila">
                     <div class="contactanos-div">
                         <label for="nombre">Nombre</label>
                         <input type="text" id="nombre" name="nombre" value="<?php echo limpiar($usuario->Nombre ?? ''); ?>" required>
@@ -168,30 +164,42 @@ function limpiar($texto)
                 </div>
             </article>
 
-            <!-- OFICIO: se escribe libremente y sugiere los oficios que ya existen para evitar duplicados. -->
-            <article style="<?php echo $estiloTarjeta; ?>">
-                <h2 style="<?php echo $estiloTitulo; ?>">Oficio</h2>
-                <div class="contactanos-div">
-                    <label for="oficio">Oficio que realizás</label>
-                    <select id="oficio" name="oficio" required>
-                        <option value="">Elegí una opción</option>
-                        <?php foreach ($oficios as $oficio): ?>
-                            <option value="<?php echo limpiar($oficio); ?>" <?php echo (($usuario->Oficio ?? '') === $oficio) ? ' selected' : ''; ?>><?php echo $oficio; ?></option>
-                        <?php endforeach; ?>
-                    </select>
-                    <input type="text" id="oficio" name="oficio" list="lista-oficios" placeholder="Otro" value="<?php echo limpiar($usuario->Oficio ?? ''); ?>" required>
-                    <datalist id="lista-oficios">
-                        <?php foreach ($oficios as $oficio): ?>
-                            <option value="<?php echo limpiar($oficio); ?>">
-                            <?php endforeach; ?>
-                    </datalist>
+            <!-- OFICIOS: se elige uno de la lista o se escribe en "Otro" (debajo del selector); los elegidos aparecen al lado, en fila, y se pueden quitar. -->
+            <article class="perfil-tarjeta">
+                <h2 class="perfil-titulo">Oficios</h2>
+                <div class="perfil-fila">
+                    <!-- Columna izquierda: el selector y, debajo, el campo "Otro". -->
+                    <div>
+                        <!-- Selector con los oficios guardados en la tabla oficios; al elegir uno se agrega a la lista. -->
+                        <div class="contactanos-div">
+                            <label for="selector-oficio">Elegí un oficio</label>
+                            <select id="selector-oficio">
+                                <option value="">Elegí una opción</option>
+                                <?php foreach ($oficios as $oficio): ?>
+                                    <option value="<?php echo limpiar($oficio); ?>"><?php echo limpiar($oficio); ?></option>
+                                <?php endforeach; ?>
+                            </select>
+                        </div>
+                        <!-- Campo "Otro": para un oficio que no está en la lista; se suma con el botón o con Enter. -->
+                        <div class="contactanos-div">
+                            <label for="otro-oficio">Otro</label>
+                            <input type="text" id="otro-oficio" placeholder="Escribí otro oficio">
+                            <button type="button" id="agregar-otro" class="perfil-boton">Agregar</button>
+                        </div>
+                    </div>
+                    <!-- Columna derecha: oficios elegidos en fila, cada uno con su botón para quitarlo, y el aviso que explica qué falta. -->
+                    <div class="contactanos-div perfil-oficios-elegidos">
+                        <p>Oficios elegidos</p>
+                        <ul id="oficios-elegidos" class="perfil-oficios"></ul>
+                        <p id="aviso-oficios"></p>
+                    </div>
                 </div>
             </article>
 
             <!-- CONTACTO: teléfono y correo por los que se puede ubicar al trabajador. -->
-            <article style="<?php echo $estiloTarjeta; ?>">
-                <h2 style="<?php echo $estiloTitulo; ?>">Información de contacto</h2>
-                <div style="<?php echo $estiloFila; ?>">
+            <article class="perfil-tarjeta">
+                <h2 class="perfil-titulo">Información de contacto</h2>
+                <div class="perfil-fila">
                     <div class="contactanos-div">
                         <label for="telefono">Teléfono</label>
                         <input type="tel" id="telefono" name="telefono" value="<?php echo limpiar($usuario->Telefono ?? ''); ?>">
@@ -204,9 +212,9 @@ function limpiar($texto)
             </article>
 
             <!-- DOMICILIO: dirección y código postal; la localidad aparece luego en la presentación. -->
-            <article style="<?php echo $estiloTarjeta; ?>">
-                <h2 style="<?php echo $estiloTitulo; ?>">Domicilio</h2>
-                <div style="<?php echo $estiloFila; ?>">
+            <article class="perfil-tarjeta">
+                <h2 class="perfil-titulo">Domicilio</h2>
+                <div class="perfil-fila">
                     <div class="contactanos-div">
                         <label for="domicilio">Calle y número</label>
                         <input type="text" id="domicilio" name="domicilio" value="<?php echo limpiar($usuario->Domicilio ?? ''); ?>">
@@ -223,21 +231,19 @@ function limpiar($texto)
             </article>
 
             <!-- FOTO DE PERFIL: zona para arrastrar la imagen o elegirla con un clic; el input invisible cubre toda la zona. -->
-            <article style="<?php echo $estiloTarjeta; ?>">
-                <h2 style="<?php echo $estiloTitulo; ?>">Foto de perfil</h2>
-                <div style="position: relative; border: 2px dashed var(--azul-intermedio); border-radius: 12px; padding: 2rem; text-align: center; color: var(--gris-oscuro);">
+            <article class="perfil-tarjeta">
+                <h2 class="perfil-titulo">Foto de perfil</h2>
+                <div class="perfil-zona-foto">
                     <p id="texto-imagen">Arrastrá una imagen hasta acá o hacé clic para elegirla</p>
-                    <img id="vista-previa" alt="Vista previa de la foto elegida" width="100" height="100"
-                        style="display: none; margin: 1rem auto 0; border-radius: 50%; object-fit: cover;">
-                    <input type="file" id="imagen" name="imagen" accept="image/*"
-                        style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0; cursor: pointer;">
+                    <img id="vista-previa" alt="Vista previa de la foto elegida" width="100" height="100" class="perfil-vista-previa">
+                    <input type="file" id="imagen" name="imagen" accept="image/*" class="perfil-input-foto">
                 </div>
             </article>
 
             <!-- BOTONES: Guardar cambios envía el formulario; Cancelar vuelve a cargar el perfil sin guardar. -->
-            <div style="display: flex; gap: 1rem; margin-bottom: 1rem;">
+            <div class="perfil-botones">
                 <button type="submit" class="boton">Guardar cambios</button>
-                <a class="boton" style="color: var(--negro-suave);" href="panel_usuarios.php<?php echo $usuario ? '?id=' . limpiar($usuario->Id) : ''; ?>">Cancelar</a>
+                <a class="boton" href="panel_usuarios.php<?php echo $usuario ? '?id=' . limpiar($usuario->Id) : ''; ?>">Cancelar</a>
             </div>
         </form>
     </section>
@@ -251,12 +257,12 @@ function limpiar($texto)
 
         <nav class="foot-enlace">
             <a href="index.html">Inicio</a>
-            <a href="servicios.html">Servicios</a>
             <a href="quienes-somos.html">Quienes somos</a>
-            <a href="contacto.html">Contacto</a>
+            <a href="contactanos.html">Contactanos</a>
+            <a href="terminos-y-condiciones.html">Términos y condiciones</a>
         </nav>
 
-        <p class="derechos">&copy; @año | ServiTrack. Todos los derechos reservados.</p>
+        <p class="derechos">&copy; 2026 | ServiTrack. Todos los derechos reservados.</p>
 
     </footer>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
@@ -272,7 +278,91 @@ function limpiar($texto)
             document.getElementById('texto-imagen').textContent = archivo.name;
             const vistaPrevia = document.getElementById('vista-previa');
             vistaPrevia.src = URL.createObjectURL(archivo);
-            vistaPrevia.style.display = 'block';
+            vistaPrevia.classList.add('activa');
+        });
+    </script>
+    <!-- SCRIPT DE OFICIOS: arma la lista de oficios elegidos, evita repetidos y permite quitarlos antes de guardar. -->
+    <script>
+        const selectorOficio = document.getElementById('selector-oficio');
+        const campoOtro = document.getElementById('otro-oficio');
+        const listaOficios = document.getElementById('oficios-elegidos');
+        const avisoOficios = document.getElementById('aviso-oficios');
+
+        // Muestra un mensaje cuando la lista está vacía y lo borra cuando ya hay oficios.
+        function actualizarAviso() {
+            avisoOficios.textContent = listaOficios.children.length === 0 ? 'Todavía no elegiste ningún oficio.' : '';
+        }
+
+        // Agrega un oficio a la lista: pone la primera letra en mayúscula, evita repetidos y crea el campo oculto que viaja al guardar.
+        function agregarOficio(texto) {
+            texto = texto.trim();
+            if (texto === '') {
+                return;
+            }
+            texto = texto.charAt(0).toUpperCase() + texto.slice(1).toLowerCase();
+            const elegidos = listaOficios.querySelectorAll('input[name="oficios[]"]');
+            for (const campo of elegidos) {
+                if (campo.value.toLowerCase() === texto.toLowerCase()) {
+                    return;
+                }
+            }
+            const item = document.createElement('li');
+            item.className = 'perfil-oficio-item';
+            const nombre = document.createElement('span');
+            nombre.textContent = texto;
+            const oculto = document.createElement('input');
+            oculto.type = 'hidden';
+            oculto.name = 'oficios[]';
+            oculto.value = texto;
+            const quitar = document.createElement('button');
+            quitar.type = 'button';
+            quitar.className = 'perfil-boton';
+            quitar.textContent = 'Quitar';
+            quitar.addEventListener('click', function() {
+                item.remove();
+                actualizarAviso();
+            });
+            item.append(nombre, oculto, quitar);
+            listaOficios.appendChild(item);
+            actualizarAviso();
+        }
+
+        // Al elegir un oficio del selector, se agrega a la lista y el selector vuelve a su opción inicial.
+        selectorOficio.addEventListener('change', function() {
+            agregarOficio(selectorOficio.value);
+            selectorOficio.value = '';
+        });
+
+        // El botón Agregar suma lo escrito en el campo "Otro" y lo deja vacío para el siguiente.
+        document.getElementById('agregar-otro').addEventListener('click', function() {
+            agregarOficio(campoOtro.value);
+            campoOtro.value = '';
+            campoOtro.focus();
+        });
+
+        // Con Enter en el campo "Otro" también se agrega el oficio, en vez de enviar el formulario.
+        campoOtro.addEventListener('keydown', function(evento) {
+            if (evento.key === 'Enter') {
+                evento.preventDefault();
+                agregarOficio(campoOtro.value);
+                campoOtro.value = '';
+            }
+        });
+
+        // Si el trabajador ya tiene oficios guardados, se cargan en la lista al abrir la página.
+        const oficiosGuardados = <?php echo json_encode($oficiosUsuario, JSON_HEX_TAG | JSON_HEX_AMP); ?>;
+        oficiosGuardados.forEach(function(oficio) {
+            agregarOficio(oficio);
+        });
+        actualizarAviso();
+
+        // Antes de guardar, exige al menos un oficio en la lista.
+        document.querySelector('form').addEventListener('submit', function(evento) {
+            if (listaOficios.children.length === 0) {
+                evento.preventDefault();
+                avisoOficios.textContent = 'Agregá al menos un oficio para poder guardar.';
+                selectorOficio.focus();
+            }
         });
     </script>
 </body>
