@@ -23,9 +23,18 @@
                 <tr>
                     <th>ID</th>
                     <th>Nombre</th>
+                    <th>Apellido</th>
+                    <th>Sexo</th>
+                    <th>CUIL</th>
+                    <th>N° Documento</th>
+                    <th>Fecha Nacimiento</th>
                     <th>Oficio</th>
                     <th>Telefono</th>
                     <th>Email</th>
+                    <th>Domicilio</th>
+                    <th>Codigo Postal</th>
+                    <th>Localidad</th>
+
                     <th>Acciones</th>
                 </tr>
             </thead>
@@ -35,9 +44,17 @@
                 <tr>
                     <td><?php echo $u->Id; ?></td>
                     <td><?php echo $u->Nombre; ?></td>
+                    <td><?php echo $u->Apellido; ?></td>
+                    <td><?php echo $u->Sexo; ?></td>
+                    <td><?php echo $u->CUIL; ?></td>
+                    <td><?php echo $u->NDoc; ?></td>
+                    <td><?php echo $u->FNacimiento; ?></td>
                     <td><?php echo $u->Oficio; ?></td>
                     <td><?php echo $u->Telefono; ?></td>
                     <td><?php echo $u->Email; ?></td>
+                    <td><?php echo $u->Domicilio; ?></td>
+                    <td><?php echo $u->CodPostal; ?></td>
+                    <td><?php echo $u->Localidad; ?></td>
                     <td>
                         <a href="ver.php?id=<?php echo $u->Id; ?>" class="btn btn-sm btn-primary">Ver</a>
                         <a href="editar.php?id=<?php echo $u->Id; ?>" class="btn btn-sm btn-warning">Editar</a>

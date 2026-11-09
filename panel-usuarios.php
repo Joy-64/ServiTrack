@@ -36,7 +36,7 @@
     <!--ACA TERMINA-->
 
     <!--ACA empieza el Panel de usuarios-->
-<section> 
+<section class="clase-section"> 
          <div class="container mt-5">
         <div class="row mb-4">
             <div class="col">
@@ -85,19 +85,19 @@
 
     <!--ACA comienza el footer, que incluye logo sin texto, links como en el header y boton de descarga de app-->
 
-    <footer class="footer">
+       <footer class="footer">
         <div class="footer-logo">
             <img src="./img/logo 2.1.png" width="100px" height="100px" alt="Logo ServiTrack">
         </div>
 
         <nav class="foot-enlace">
             <a href="index.html">Inicio</a>
-            <a href="servicios.html">Servicios</a>
             <a href="quienes-somos.html">Quienes somos</a>
-            <a href="contacto.html">Contacto</a>
+            <a href="contactanos.html">Contactanos</a>
+            <a href="terminos-y-condiciones.html">Términos y condiciones</a>
         </nav>
 
-        <p class="derechos">&copy; @año | ServiTrack. Todos los derechos reservados.</p>
+        <p class="derechos">&copy; 2026 | ServiTrack. Todos los derechos reservados.</p>
 
     </footer>
      <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>

@@ -30,6 +30,39 @@ $accion = $usuario ? 'editar' : 'agregar';
                     </div>
 
                     <div class="mb-3">
+                        <label class="form-label">Apellido</label>
+                        <input type="text" class="form-control" name="apellido" value="<?php echo $usuario ? $usuario->Apellido : ''; ?>" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Sexo</label>
+                        <input type="text" class="form-control" name="sexo" value="<?php echo $usuario ? $usuario->Sexo : ''; ?>" required> 
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">CUIL</label>
+                        <input type="text" class="form-control" name="cuil" value="<?php echo $usuario ? $usuario->CUIL : ''; ?>" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">N° Documento</label>
+                        <input type="text" class="form-control" name="ndoc" value="<?php echo $usuario ? $usuario->NDoc : ''; ?>" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Fecha Nacimiento</label>
+                        <input type="date" class="form-control" name="fnacimiento" value="<?php echo $usuario ? $usuario->FNacimiento : ''; ?>" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Domicilio</label>
+                        <input type="text" class="form-control" name="domicilio" value="<?php echo $usuario ? $usuario->Domicilio : ''; ?>" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Codigo Postal</label>
+                        <input type="text" class="form-control" name="codpostal" value="<?php echo $usuario ? $usuario->CodPostal : ''; ?>" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Localidad</label>
+                        <input type="text" class="form-control" name="localidad" value="<?php echo $usuario ? $usuario->Localidad : ''; ?>" required>
+                    </div>
+
+                    <div class="mb-3">
                         <label class="form-label">Correo</label>
                         <input type="email" class="form-control" name="email" value="<?php echo $usuario ? $usuario->Email : ''; ?>" required>
                     </div>
