@@ -61,9 +61,32 @@ class Usuario
         return null;
     }
 
-    public static function agregar($Nombre, $Apellido, $Sexo, $CUIL, $NDoc, $FNacimiento, $Domicilio, $CodPostal, $Localidad, $Oficio, $Telefono, $Email, $Imagen)
+    public static function agregar($datos)
     {
-        return true;
+        try {
+            $db = Database::getInstance()->getConnection();
+            $stmt = $db->prepare('INSERT INTO trabajadores (nombre, apellido, sexo, cuil, nro_documento, fecha_nacimiento, domicilio, codigo_postal, localidad, oficio, telefono, email, imagen) 
+            VALUES (:nombre, :apellido, :sexo, :cuil, :nro_documento, :fecha_nacimiento, :domicilio, :codigo_postal, :localidad, :oficio, :telefono, :email, :imagen)');
+            $stmt->execute([
+                ':nombre' => $datos['Nombre'],
+                ':apellido' => $datos['Apellido'],
+                ':sexo' => $datos['Sexo'],
+                ':cuil' => $datos['CUIL'],
+                ':nro_documento' => $datos['NDoc'],
+                ':fecha_nacimiento' => $datos['FNacimiento'],
+                ':domicilio' => $datos['Domicilio'],
+                ':codigo_postal' => $datos['CodPostal'],
+                ':localidad' => $datos['Localidad'],
+                ':oficio' => $datos['Oficio'],
+                ':telefono' => $datos['Telefono'],
+                ':email' => $datos['Email'],
+                ':imagen' => $datos['Imagen']?? null
+            ]);
+            return $db->lastInsertId();
+        } catch (PDOException $e) {
+            error_log("Error al agregar trabajador: " . $e->getMessage());
+            return false;
+        };
     }
 
     public static function editar($Id, $Nombre, $Apellido, $Sexo, $CUIL, $NDoc, $FNacimiento, $Domicilio, $CodPostal, $Localidad, $Oficio, $Telefono, $Email, $Imagen)
