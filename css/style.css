@@ -245,12 +245,7 @@ body{
 }
 
 
-/* ==========================================================================
-   PERFIL DE USUARIO (panel_usuarios.php)
-   Pegar AL FINAL de css/style.css. Usa las variables de :root que ya existen
-   (colores y tipografías), así que no hay que definirlas de nuevo.
-   Cada regla indica a qué elemento de la página corresponde.
-   ========================================================================== */
+/* Clases del panel de usuario */
 
 
 /*SECCIÓN: tipografía y color base del perfil; se suma a clase-section (<section class="clase-section perfil">)*/

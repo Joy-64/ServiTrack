@@ -11,7 +11,7 @@ class Usuario
     public $CUIL;
     public $NDoc;
     public $FNacimiento;
-    public $Domicilio;
+
     public $CodPostal;
     public $Localidad;
     public $Oficio;
@@ -19,7 +19,7 @@ class Usuario
     public $Email;
     public $Imagen;
 
-    public function __construct($Id = null, $Nombre = '', $Apellido = '', $Sexo = '', $CUIL = '', $NDoc = '', $FNacimiento = '', $Domicilio = '', $CodPostal = '', $Localidad = '', $Oficio = '', $Telefono = '', $Email = '', $Imagen = '')
+    public function __construct($Id = null, $Nombre = '', $Apellido = '', $Sexo = '', $CUIL = '', $NDoc = '', $FNacimiento = '', $CodPostal = '', $Localidad = '', $Oficio = '', $Telefono = '', $Email = '', $Imagen = '')
     {
         $this->Id = $Id;
         $this->Nombre = $Nombre;
@@ -28,7 +28,6 @@ class Usuario
         $this->CUIL = $CUIL;
         $this->NDoc = $NDoc;
         $this->FNacimiento = $FNacimiento;
-        $this->Domicilio = $Domicilio;
         $this->CodPostal = $CodPostal;
         $this->Localidad = $Localidad;
         $this->Oficio = $Oficio;
@@ -65,31 +64,57 @@ class Usuario
     {
         try {
             $db = Database::getInstance()->getConnection();
-            $stmt = $db->prepare('INSERT INTO trabajadores (nombre, apellido, sexo, cuil, nro_documento, fecha_nacimiento, domicilio, codigo_postal, localidad, oficio, telefono, email, imagen) 
-            VALUES (:nombre, :apellido, :sexo, :cuil, :nro_documento, :fecha_nacimiento, :domicilio, :codigo_postal, :localidad, :oficio, :telefono, :email, :imagen)');
+            $stmt = $db->prepare('INSERT INTO trabajadores (nombre, apellido, sexo, cuil, ndoc, fNacimiento, imagen, idTdoc, IdUsuarios) 
+            VALUES (:nombre, :apellido, :sexo, :cuil, :ndoc, :fNacimiento, :imagen, :idTdoc, :IdUsuarios)');
             $stmt->execute([
                 ':nombre' => $datos['Nombre'],
                 ':apellido' => $datos['Apellido'],
                 ':sexo' => $datos['Sexo'],
                 ':cuil' => $datos['CUIL'],
-                ':nro_documento' => $datos['NDoc'],
-                ':fecha_nacimiento' => $datos['FNacimiento'],
-                ':domicilio' => $datos['Domicilio'],
-                ':codigo_postal' => $datos['CodPostal'],
-                ':localidad' => $datos['Localidad'],
-                ':oficio' => $datos['Oficio'],
-                ':telefono' => $datos['Telefono'],
-                ':email' => $datos['Email'],
-                ':imagen' => $datos['Imagen']?? null
+                ':ndoc' => $datos['NDoc'],
+                ':fNacimiento' => $datos['FNacimiento'],
+                ':imagen' => $datos['Imagen']?? null,
+                ':idTdoc' => $datos['IdTdoc'] ?? null,
+                ':IdUsuarios' => $datos['IdUsuarios'] ?? null
             ]);
-            return $db->lastInsertId();
+            $idTrabajador = $db->lastInsertId(); self::agregarOficios($db, $idTrabajador, $datos['Oficios'] ?? []);
+            return $idTrabajador;
         } catch (PDOException $e) {
             error_log("Error al agregar trabajador: " . $e->getMessage());
             return false;
         };
     }
-
-    public static function editar($Id, $Nombre, $Apellido, $Sexo, $CUIL, $NDoc, $FNacimiento, $Domicilio, $CodPostal, $Localidad, $Oficio, $Telefono, $Email, $Imagen)
+    private static function agregarOficios($db, $idTrabajador, $oficios)
+    {
+        try {
+            
+            $stmt = $db->prepare('INSERT INTO trabajador_oficio (id_trabajador, id_oficio) VALUES (:id_trabajador, :id_oficio)');
+            foreach ($oficios as $oficio) {
+                $oficio = trim($oficio);
+                if ($oficio === '') {
+                    continue; // Saltar oficios vacíos
+                }
+                // Obtener el ID del oficio a partir de su descripción
+                $stmtOficio = $db->prepare('SELECT id FROM oficios WHERE descripcion = :descripcion LIMIT 1');
+                $stmtOficio->execute([':descripcion' => $oficio]);
+                $idOficio = $stmtOficio->fetchColumn();
+                if (!$idOficio) {
+                    $stmtInsertOficio = $db->prepare('INSERT INTO oficios (descripcion) VALUES (:descripcion)');
+                    $stmtInsertOficio->execute([':descripcion' => $oficio]);
+                    $idOficio = $db->lastInsertId();
+                }
+                if ($idOficio) {
+                    $stmt->execute([
+                        ':id_trabajador' => $idTrabajador,
+                        ':id_oficio' => $idOficio
+                    ]);
+                }
+            }
+        } catch (PDOException $e) {
+            error_log("Error al agregar oficios del trabajador: " . $e->getMessage());
+        }
+    }
+    public static function editar($Id, $Nombre, $Apellido, $Sexo, $CUIL, $NDoc, $FNacimiento, $CodPostal, $Localidad, $Oficio, $Telefono, $Email, $Imagen)
     {
         return true;
     }
