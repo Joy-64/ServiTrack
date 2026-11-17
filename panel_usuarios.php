@@ -195,12 +195,12 @@ function limpiar($texto)
                 </div>
             </article>
 
-            <!-- CONTACTO: teléfono y correo por los que se puede ubicar al trabajador. -->
+            <!-- CONTACTO: telefono y correo por los que se puede ubicar al trabajador. -->
             <article class="perfil-tarjeta">
                 <h2 class="perfil-titulo">Información de contacto</h2>
                 <div class="perfil-fila">
                     <div class="contactanos-div">
-                        <label for="telefono">Teléfono</label>
+                        <label for="telefono">Telefono</label>
                         <input type="tel" id="telefono" name="telefono" value="<?php echo limpiar($usuario->Telefono ?? ''); ?>">
                     </div>
                     <div class="contactanos-div">

@@ -64,6 +64,7 @@ class Usuario
     {
         try {
             $db = Database::getInstance()->getConnection();
+            $db->beginTransaction();
             $stmt = $db->prepare('INSERT INTO trabajadores (nombre, apellido, sexo, cuil, ndoc, fNacimiento, imagen, idTdoc, IdUsuarios) 
             VALUES (:nombre, :apellido, :sexo, :cuil, :ndoc, :fNacimiento, :imagen, :idTdoc, :IdUsuarios)');
             $stmt->execute([
@@ -78,15 +79,21 @@ class Usuario
                 ':IdUsuarios' => $datos['IdUsuarios'] ?? null
             ]);
             $idTrabajador = $db->lastInsertId(); self::agregarOficios($db, $idTrabajador, $datos['Oficios'] ?? []);
-            return $idTrabajador;
+            
+            self::guardarContacto($db, $idTrabajador, 'Teléfono', $datos['Telefono'] ?? '');
+            self::guardarContacto($db, $idTrabajador, 'Email', $datos['Email'] ?? ''); 
+            self::guardarDomicilio($db, $idTrabajador, $datos['Domicilio'] ?? '', $datos['CodPostal'] ?? '', $datos['Localidad'] ?? '');
+            $db->commit();
+            return $idTrabajador; 
         } catch (PDOException $e) {
+            $db->rollBack();
             error_log("Error al agregar trabajador: " . $e->getMessage());
             return false;
         };
     }
     private static function agregarOficios($db, $idTrabajador, $oficios)
     {
-        try {
+         {
             
             $stmt = $db->prepare('INSERT INTO trabajador_oficio (id_trabajador, id_oficio) VALUES (:id_trabajador, :id_oficio)');
             foreach ($oficios as $oficio) {
@@ -110,9 +117,7 @@ class Usuario
                     ]);
                 }
             }
-        } catch (PDOException $e) {
-            error_log("Error al agregar oficios del trabajador: " . $e->getMessage());
-        }
+        } 
     }
     public static function editar($Id, $Nombre, $Apellido, $Sexo, $CUIL, $NDoc, $FNacimiento, $CodPostal, $Localidad, $Oficio, $Telefono, $Email, $Imagen)
     {
@@ -121,7 +126,19 @@ class Usuario
 
     public static function eliminar($Id)
     {
-        return true;
+        try {
+            $db = Database::getInstance()->getConnection();
+            $db->beginTransaction();
+            self::borrarRelaciones($db, $Id);
+            $stmt = $db->prepare('DELETE FROM trabajadores WHERE idTrabajador = :id');
+            $stmt->execute([':id' => $Id]);
+            $db->commit();
+            return true;
+        } catch (PDOException $e) {
+            $db->rollBack();
+            error_log("Error al eliminar trabajador: " . $e->getMessage());
+            return false;
+        }
     }
     public static function obtenerOficios()
     {
@@ -146,5 +163,66 @@ class Usuario
             error_log("Error al obtener oficios del trabajador: " . $e->getMessage());
             return [];
         }
+    }
+    private static function guardarContacto($db, $idTrabajador, $medio, $valor)
+    {
+        $valor = trim($valor);
+        if ($valor === '') {
+            return; // No guardar contactos vacíos
+        }
+        $stmt = $db->prepare('SELECT id FROM medios_contactos WHERE descripcion = :descripcion LIMIT 1');
+        $stmt->execute([':descripcion' => $medio]);
+        $idMedio = $stmt->fetchColumn();
+        if (!$idMedio) {
+            $stmt = $db->prepare('INSERT INTO medios_contactos (descripcion) VALUES (:descripcion)');
+            $stmt->execute([':descripcion' => $medio]);
+            $idMedio = $db->lastInsertId();
+        }
+        $stmt = $db->prepare('INSERT INTO trabajador_medios_contactos (id_trabajador, id_medio_contacto, valor) VALUES (:id_trabajador, :id_medio, :valor)');
+        $stmt->execute([
+            ':id_trabajador' => $idTrabajador,
+            ':id_medio' => $idMedio,
+            ':valor' => $valor
+        ]);
+        
+    }
+    private static function guardarDomicilio ($db, $idTrabajador, $calle, $codPostal, $localidad)
+    {
+        $calle = trim($calle);
+        $codPostal = trim($codPostal);
+        $localidad = trim($localidad);
+        if ($calle === '' && $codPostal === '' && $localidad === '') {
+            return; // No guardar domicilios vacíos
+        }
+        $idCodPostal = null;
+        if ($codPostal !== '')
+            {
+                $stmt = $db->prepare('SELECT id FROM codigo_postal WHERE codpostal = :codpostal and localidad = :localidad LIMIT 1');
+                $stmt->execute([':codpostal' => $codPostal, ':localidad' => $localidad]);
+                $idCodPostal = $stmt->fetchColumn();
+                if (!$idCodPostal) {
+                    $stmt = $db->prepare('INSERT INTO codigo_postal (codpostal, localidad) VALUES (:codpostal, :localidad)');
+                    $stmt->execute([':codpostal' => $codPostal, ':localidad' => $localidad]);
+                    $idCodPostal = $db->lastInsertId();
+                }
+            } 
+
+        $stmt = $db->prepare('INSERT INTO domicilio_trabajador (id_trabajador, id_cod_postal) VALUES (:id_trabajador, :id_cod_postal)');
+        $stmt->execute([
+            ':id_trabajador' => $idTrabajador,
+            ':id_cod_postal' => $idCodPostal,
+           
+        ]);
+    }
+    private static function borrarRelaciones($db, $idTrabajador)
+    {
+        $stmt = $db->prepare('DELETE FROM trabajador_oficio WHERE id_trabajador = :id_trabajador');
+        $stmt->execute([':id_trabajador' => $idTrabajador]);
+
+        $stmt = $db->prepare('DELETE FROM trabajador_medios_contactos WHERE id_trabajador = :id_trabajador');
+        $stmt->execute([':id_trabajador' => $idTrabajador]);
+
+        $stmt = $db->prepare('DELETE FROM domicilio_trabajador WHERE id_trabajador = :id_trabajador');
+        $stmt->execute([':id_trabajador' => $idTrabajador]);
     }
 }
